@@ -59,4 +59,10 @@ dependencies {
     // implementation ('com.google.code.gson:gson:2.8.6') {
     //     transitive = false
     // }
+
+    implementation rfg.deobf('curse.maven:jei-238222:5101347')
+    implementation rfg.deobf('curse.maven:mystical_lib-277064:3483816')
+    implementation rfg.deobf('curse.maven:mystical_world-282940:3460961')
+    implementation rfg.deobf('curse.maven:patchouli-306770:3162874')
+    implementation rfg.deobf('curse.maven:roots-246183:3905074')
 }
