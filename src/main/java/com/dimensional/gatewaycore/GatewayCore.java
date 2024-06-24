@@ -6,7 +6,7 @@ import org.apache.logging.log4j.Logger;
 
 @Mod(
     modid = Tags.MOD_ID, name = Tags.MOD_NAME, version = Tags.VERSION,
-    dependencies = "required-after:jei;required-after:roots"
+    dependencies = "required-after:jei;after:roots"
 )
 public class GatewayCore {
 

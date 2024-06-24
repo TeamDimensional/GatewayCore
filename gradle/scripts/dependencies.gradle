@@ -1,5 +1,14 @@
 apply from: 'gradle/scripts/helpers.gradle'
 
+def debug_roots = true
+
+final def mod_dependencies = [
+        'mystical_lib-277064:3483816': [debug_roots],
+        'mystical_world-282940:3460961': [debug_roots],
+        'patchouli-306770:3162874': [debug_roots],
+        'roots-246183:3905074': [debug_roots],
+]
+
 repositories {
     // Other repositories described by default:
     // CleanroomMC: https://maven.cleanroommc.com
@@ -61,8 +70,12 @@ dependencies {
     // }
 
     implementation rfg.deobf('curse.maven:jei-238222:5101347')
-    implementation rfg.deobf('curse.maven:mystical_lib-277064:3483816')
-    implementation rfg.deobf('curse.maven:mystical_world-282940:3460961')
-    implementation rfg.deobf('curse.maven:patchouli-306770:3162874')
-    implementation rfg.deobf('curse.maven:roots-246183:3905074')
+
+    mod_dependencies.entrySet().forEach {
+        def mod = rfg.deobf('curse.maven:' + it.key)
+        compileOnly mod
+        if (it.value.any { it.toBoolean() }) {
+            runtimeOnly mod
+        }
+    }
 }

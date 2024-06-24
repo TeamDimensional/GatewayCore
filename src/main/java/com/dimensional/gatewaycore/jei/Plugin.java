@@ -9,6 +9,7 @@ import mezz.jei.api.IModRegistry;
 import mezz.jei.api.JEIPlugin;
 import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.Loader;
 
 @JEIPlugin
 public class Plugin implements IModPlugin {
@@ -17,14 +18,20 @@ public class Plugin implements IModPlugin {
     @Override
     public void registerCategories(IRecipeCategoryRegistration registry) {
         IGuiHelper helper = registry.getJeiHelpers().getGuiHelper();
-        registry.addRecipeCategories(new FlowerGrowth(helper));
+
+        if (Loader.isModLoaded("roots")) {
+            registry.addRecipeCategories(new FlowerGrowth(helper));
+        }
     }
 
     @Override
     public void register(IModRegistry registry) {
-        int c = (int) ModRecipes.getFlowerRecipes().values().stream().filter(r -> r.getAllowedSoils().isEmpty()).count();
-        registry.addRecipes(ModRecipes.getFlowerRecipes().values(), FLOWER_GROWTH);
-        registry.addRecipeCatalyst(new ItemStack(ModItems.ritual_flower_growth), FLOWER_GROWTH);
-        registry.handleRecipes(FlowerRecipe.class, r -> new FlowerGrowthRecipe(r, c), FLOWER_GROWTH);
+        if (Loader.isModLoaded("roots")) {
+            // Flower Growth Ritual
+            int c = (int) ModRecipes.getFlowerRecipes().values().stream().filter(r -> r.getAllowedSoils().isEmpty()).count();
+            registry.addRecipes(ModRecipes.getFlowerRecipes().values(), FLOWER_GROWTH);
+            registry.addRecipeCatalyst(new ItemStack(ModItems.ritual_flower_growth), FLOWER_GROWTH);
+            registry.handleRecipes(FlowerRecipe.class, r -> new FlowerGrowthRecipe(r, c), FLOWER_GROWTH);
+        }
     }
 }
