@@ -1,1 +1,18 @@
 container.gateway.flower_growth.name=Flower Growth Ritual
+
+material.gateway_flint.name=Flint
+material.gateway_wood.name=Wood
+material.gateway_bone.name=Bone
+material.gateway_netherrack.name=Netherrack
+
+material.gateway_wood.prefix=Wooden %s
+
+modifier.gateway_ecological.name=Ecological
+modifier.gateway_ecological.desc=§oGreen Power!§r\nThis tool will slowly repair when not in use!
+modifier.gateway_crude.name=Crude
+modifier.gateway_crude.desc=§oArmor is for cowards!§r\nBonus damage against unarmored targets.
+modifier.gateway_crude.extra=Vs Unarmored: +%s
+modifier.stonebreaker.name=Stonebreaker
+modifier.stonebreaker.desc=§oStone must be eradicated!§r\nBreaks soft Stone even faster, but breaks hard Stone even slower.
+modifier.strike.name=Strike
+modifier.strike.desc=§oA souvenir for your enemies!§r\nHas a chance to spend extra durability to deal critical damage.

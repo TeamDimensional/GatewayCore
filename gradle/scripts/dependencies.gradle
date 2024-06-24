@@ -1,12 +1,21 @@
 apply from: 'gradle/scripts/helpers.gradle'
 
-def debug_roots = true
+def debug_roots = false
+def debug_tinker = true
 
 final def mod_dependencies = [
+        'jei-238222:5101347': [true],
         'mystical_lib-277064:3483816': [debug_roots],
         'mystical_world-282940:3460961': [debug_roots],
         'patchouli-306770:3162874': [debug_roots],
         'roots-246183:3905074': [debug_roots],
+        'mantle-74924:2713386': [debug_tinker],
+        'tinkers-construct-74072:2902483': [debug_tinker],
+]
+
+final def runtime_dependencies = [
+        'hwyla-253449:2568751': [true],
+        'tinkers-jei-291786:2701203': [debug_tinker],
 ]
 
 repositories {
@@ -69,12 +78,16 @@ dependencies {
     //     transitive = false
     // }
 
-    implementation rfg.deobf('curse.maven:jei-238222:5101347')
-
     mod_dependencies.entrySet().forEach {
         def mod = rfg.deobf('curse.maven:' + it.key)
         compileOnly mod
         if (it.value.any { it.toBoolean() }) {
+            runtimeOnly mod
+        }
+    }
+    runtime_dependencies.entrySet().forEach {
+        if (it.value.any { it.toBoolean() }) {
+            def mod = rfg.deobf('curse.maven:' + it.key)
             runtimeOnly mod
         }
     }
