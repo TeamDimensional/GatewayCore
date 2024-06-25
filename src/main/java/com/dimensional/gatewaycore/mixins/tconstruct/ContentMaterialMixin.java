@@ -58,7 +58,7 @@ public class ContentMaterialMixin extends TinkerPage {
         lineCounts.put(MaterialTypes.HANDLE, 2);
         lineCounts.put(MaterialTypes.EXTRA, 1);
 
-        String[] mTypes = {MaterialTypes.HANDLE, MaterialTypes.HEAD, MaterialTypes.EXTRA};
+        String[] mTypes = {MaterialTypes.HEAD, MaterialTypes.HANDLE, MaterialTypes.EXTRA};
         int[] ySkips = {0, 0};
         int i = 0;
         for (String mType : mTypes) {
