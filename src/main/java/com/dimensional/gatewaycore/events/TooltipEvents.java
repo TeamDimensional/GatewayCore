@@ -11,17 +11,29 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.darkhax.gamestages.GameStageHelper;
 
 import java.util.*;
-import java.util.function.Predicate;
 
 @Mod.EventBusSubscriber
 public class TooltipEvents {
 
+    public interface StackPredicate {
+        boolean satisfies(ItemStack stack);
+    }
+
     private static class PredicateWithText {
-        final Predicate<ItemStack> ps;
+        final StackPredicate ps;
         final String s;
-        PredicateWithText(Predicate<ItemStack> predicate, String text) {
+        PredicateWithText(StackPredicate predicate, String text) {
             ps = predicate;
             s = text;
+        }
+    }
+
+    private static class PredicateWithNumber {
+        final StackPredicate ps;
+        final int s;
+        PredicateWithNumber(StackPredicate predicate, int tier) {
+            ps = predicate;
+            s = tier;
         }
     }
 
@@ -31,6 +43,7 @@ public class TooltipEvents {
     private static final Map<String, String> tooltips = new HashMap<>();
     private static final Map<Integer, String> tierNames = new HashMap<>();
     private static final List<PredicateWithText> predicates = new ArrayList<>();
+    private static final List<PredicateWithNumber> tierPredicates = new ArrayList<>();
 
     private static String stringify(ItemStack item) {
         return item.getItem().getRegistryName() + "@" + item.getMetadata();
@@ -77,8 +90,12 @@ public class TooltipEvents {
         setTooltipBase(item, TextFormatting.YELLOW.toString() + tooltip);
     }
 
-    public static void addPredicate(Predicate<ItemStack> p, String s) {
+    public static void addPredicate(StackPredicate p, String s) {
         predicates.add(new PredicateWithText(p, s));
+    }
+
+    public static void addTierPredicate(StackPredicate p, int s) {
+        tierPredicates.add(new PredicateWithNumber(p, s));
     }
 
     public static void setTierName(int tier, String name) {
@@ -86,6 +103,7 @@ public class TooltipEvents {
     }
 
     private static String getTierText(int tier) {
+        if (tier < 0) return "Future content";
         if (tierNames.containsKey(tier)) return "Tier " + tier + " - " + tierNames.get(tier);
         return "Tier " + tier;
     }
@@ -97,15 +115,25 @@ public class TooltipEvents {
         return GameStageHelper.hasStage(player, "tier" + tier);
     }
 
+    private static int getTier(ItemStack stack) {
+        for (PredicateWithNumber pair : tierPredicates) {
+            if (pair.ps.satisfies(stack)) {
+                return pair.s;
+            }
+        }
+        String key = stringify(stack);
+        return tiers.getOrDefault(key, 1);
+    }
+
     private static List<String> getTooltips(ItemStack stack, EntityPlayer player) {
         List<String> output = new LinkedList<>();
+        int tier = getTier(stack);
         String key = stringify(stack);
-        int tier = tiers.getOrDefault(key, 1);
         boolean isGated = gated.contains(key);
         if (isGated) {
             // Gated
             output.add(TextFormatting.AQUA + "This item is gated! Its recipe was temporarily removed.");
-        } else if (GatewayConfig.showItemTiers) {
+        } else if (GatewayConfig.showItemTiers && tier != 0) {
             // Tier
             TextFormatting color = hasTier(player, tier) ? TextFormatting.GREEN : TextFormatting.RED;
             output.add(color + getTierText(tier));
@@ -118,7 +146,7 @@ public class TooltipEvents {
         if (tt != null) output.add(tt);
         // Predicates
         for (PredicateWithText pair : predicates) {
-            if (pair.ps.test(stack)) {
+            if (pair.ps.satisfies(stack)) {
                 output.add(pair.s);
             }
         }
