@@ -1,6 +1,8 @@
 package com.dimensional.gatewaycore;
 
+import com.dimensional.gatewaycore.events.TinkerEvents;
 import com.dimensional.gatewaycore.tinker.MaterialRegistry;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -16,7 +18,10 @@ public class GatewayCore {
     public static final Logger LOGGER = LogManager.getLogger(Tags.MOD_NAME);
 
     public GatewayCore() {
-        MaterialRegistry.setup();
+        if (Loader.isModLoaded("tconstruct")) {
+            MinecraftForge.EVENT_BUS.register(TinkerEvents.class);
+            MaterialRegistry.setup();
+        }
     }
 
     @Mod.EventHandler

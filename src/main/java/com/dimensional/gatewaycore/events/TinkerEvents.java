@@ -1,12 +1,12 @@
-package com.dimensional.gatewaycore;
+package com.dimensional.gatewaycore.events;
 
+import com.dimensional.gatewaycore.GatewayConfig;
+import com.dimensional.gatewaycore.GatewayCore;
 import com.dimensional.gatewaycore.tinker.MaterialRegistry;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import slimeknights.tconstruct.library.events.MaterialEvent;
 
-@Mod.EventBusSubscriber
-public class EventManager {
+public class TinkerEvents {
 
     @SubscribeEvent
     public static void registerTinkerMaterial(MaterialEvent.MaterialRegisterEvent e) {
