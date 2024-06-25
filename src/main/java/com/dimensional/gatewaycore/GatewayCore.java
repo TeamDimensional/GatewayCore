@@ -11,7 +11,7 @@ import org.apache.logging.log4j.Logger;
 
 @Mod(
     modid = Tags.MOD_ID, name = Tags.MOD_NAME, version = Tags.VERSION,
-    dependencies = "required-after:jei;after:roots;after:tconstruct;after:botania;after:essentialcraft"
+    dependencies = "required-after:jei;after:roots;after:tconstruct;after:botania;after:essentialcraft;after:gamestages"
 )
 public class GatewayCore {
 

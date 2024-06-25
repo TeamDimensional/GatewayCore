@@ -1,9 +1,11 @@
 apply from: 'gradle/scripts/helpers.gradle'
 
 def debug_roots = false
-def debug_tinker = true
-def debug_ec4 = true
-def debug_botania = true
+def debug_tinker = false
+def debug_ec4 = false
+def debug_botania = false
+def debug_groovyscript = false
+def debug_gamestages = false
 
 final def mod_dependencies = [
         'jei-238222:5101347': [true],
@@ -17,11 +19,14 @@ final def mod_dependencies = [
         'dummycore-unofficial-266491:2611426': [debug_ec4],
         'baubles-227083:2518667': [debug_ec4, debug_botania],
         'botania-225643:3330934': [debug_botania],
+        'gamestages-268655:2951840': [debug_gamestages],
+        'bookshelf-228525:2836960': [debug_gamestages],
 ]
 
 final def runtime_dependencies = [
         'hwyla-253449:2568751': [true],
         'tinkers-jei-291786:2701203': [debug_tinker],
+        'groovyscript-687577:5439031': [debug_groovyscript],
 ]
 
 repositories {
