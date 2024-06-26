@@ -29,3 +29,14 @@ modifier.naturalselection.name=Natural Selection
 modifier.naturalselection.desc=§oThe wonders of AI...§r\nYour tool gains bonus modifiers over time!
 modifier.naturalselection.extra=Experience: %d/%d
 modifier.naturalselection.extra.maxed=Maxed Experience
+
+container.gateway.cofh_world.no_village=Prevents village generation
+container.gateway.cofh_world.cave.ceiling=Ceilings of caves
+container.gateway.cofh_world.cave.floor=Floors of caves
+container.gateway.cofh_world.rarity=%s%% of chunks
+container.gateway.cofh_world.vein_count=Veins per chunk: %d
+container.gateway.cofh_world.attempt_count=Attempts per chunk: %d
+container.gateway.cofh_world.vein_size=Vein size: %d
+container.gateway.cofh_world.max_height=Maximum height: %d
+container.gateway.cofh_world.uniform_generation=Y Level: %d-%d
+container.gateway.cofh_world.gaussian_generation=Y Level: %d-%d (best: %d)

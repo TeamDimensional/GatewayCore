@@ -1,5 +1,6 @@
 package com.dimensional.gatewaycore.mixins.cofhworld;
 
+import cofh.cofhworld.data.numbers.INumberProvider;
 import cofh.cofhworld.util.random.WeightedBlock;
 import cofh.cofhworld.world.generator.WorldGenMinableCluster;
 import org.spongepowered.asm.mixin.Mixin;
@@ -14,4 +15,7 @@ public interface WorldGenMinableClusterMixin {
 
     @Accessor
     List<WeightedBlock> getCluster();
+
+    @Accessor
+    INumberProvider getGenClusterSize();
 }

@@ -6,7 +6,7 @@ def debug_ec4 = false
 def debug_botania = false
 def debug_groovyscript = false
 def debug_gamestages = false
-def debug_cofh_world = true
+def debug_cofh_world = false
 
 final def mod_dependencies = [
         'jei-238222:5101347': [true],

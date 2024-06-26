@@ -1,6 +1,7 @@
 package com.dimensional.gatewaycore.jei;
 
 import cofh.cofhworld.world.IFeatureGenerator;
+import com.dimensional.gatewaycore.GatewayCore;
 import com.dimensional.gatewaycore.jei.cofhworld.CoFHDistributionResolver;
 import com.dimensional.gatewaycore.jei.cofhworld.CoFHWorldCategory;
 import com.dimensional.gatewaycore.jei.cofhworld.CoFHWorldRecipe;
@@ -8,13 +9,10 @@ import epicsquid.roots.init.ModItems;
 import epicsquid.roots.init.ModRecipes;
 import epicsquid.roots.recipe.FlowerRecipe;
 import mezz.jei.api.*;
-import mezz.jei.api.recipe.IRecipeCategory;
 import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.Loader;
 import cofh.cofhworld.init.WorldHandler;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.event.FMLLoadCompleteEvent;
 
 import javax.annotation.Nonnull;
 import java.util.LinkedList;
@@ -41,6 +39,7 @@ public class Plugin implements IModPlugin {
     public void register(@Nonnull IModRegistry registry) {
         if (Loader.isModLoaded("roots")) {
             // Flower Growth Ritual
+            GatewayCore.LOGGER.info("Loading Flower Growth recipes...");
             int c = (int) ModRecipes.getFlowerRecipes().values().stream().filter(r -> r.getAllowedSoils().isEmpty()).count();
             registry.addRecipes(ModRecipes.getFlowerRecipes().values(), FLOWER_GROWTH);
             registry.addRecipeCatalyst(new ItemStack(ModItems.ritual_flower_growth), FLOWER_GROWTH);
@@ -49,11 +48,10 @@ public class Plugin implements IModPlugin {
 
         if (Loader.isModLoaded("cofhworld")) {
             CoFHDistributionResolver.init();
-            System.out.println("Loading CoFH recipes...");
+            GatewayCore.LOGGER.info("Loading CoFH World recipes...");
 
             List<CoFHWorldRecipe<?>> recipes = new LinkedList<>();
             for (IFeatureGenerator feat : WorldHandler.getFeatures()) {
-                System.out.println(feat);
                 CoFHWorldRecipe<?> recipe = CoFHDistributionResolver.makeRecipe(feat);
                 if (recipe != null) {
                     recipes.add(recipe);
@@ -62,8 +60,7 @@ public class Plugin implements IModPlugin {
 
             registry.addRecipes(recipes, COFH_WORLD);
             registry.handleRecipes(CoFHWorldRecipe.class, r -> r, COFH_WORLD);
-        } else
-            System.out.println("No CoFH today :(");
-        System.out.println("JEI integration done");
+        }
+        GatewayCore.LOGGER.info("JEI integration done");
     }
 }
