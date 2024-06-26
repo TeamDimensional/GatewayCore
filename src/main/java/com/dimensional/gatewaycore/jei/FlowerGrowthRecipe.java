@@ -9,6 +9,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -23,7 +24,7 @@ public class FlowerGrowthRecipe implements IRecipeWrapper, ITooltipCallback<Item
     }
 
     @Override
-    public void onTooltip(int slotIndex, boolean input, ItemStack ingredient, List<String> tooltip) {
+    public void onTooltip(int slotIndex, boolean input, @Nonnull ItemStack ingredient, @Nonnull List<String> tooltip) {
         if (!input && recipe.getAllowedSoils().isEmpty()) {
             float weight = ((float) 100) / count;
             tooltip.add(String.format("%.2f", weight) + "% chance");
@@ -31,7 +32,7 @@ public class FlowerGrowthRecipe implements IRecipeWrapper, ITooltipCallback<Item
     }
 
     @Override
-    public void getIngredients(IIngredients ingredients) {
+    public void getIngredients(@Nonnull IIngredients ingredients) {
         List<ItemStack> inputs = new ArrayList<>();
         if (recipe.getAllowedSoils().isEmpty()) {
             assert Blocks.DIRT != null;

@@ -11,41 +11,42 @@ import mezz.jei.api.recipe.IRecipeCategory;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
 
-public class FlowerGrowth implements IRecipeCategory<FlowerGrowthRecipe> {
+import javax.annotation.Nonnull;
+
+public class FlowerGrowthCategory implements IRecipeCategory<FlowerGrowthRecipe> {
 
     private final IDrawable background;
 
-    public FlowerGrowth(IGuiHelper helper) {
+    public FlowerGrowthCategory(IGuiHelper helper) {
         this.background = helper.createDrawable(
             new ResourceLocation("gatewaycore", "textures/gui/flower_growth.png"), 0, 0, 86, 22);
     }
 
     @Override
-    public String getUid() {
+    public @Nonnull String getUid() {
         return Plugin.FLOWER_GROWTH;
     }
 
     @Override
-    public String getTitle() {
+    public @Nonnull String getTitle() {
         return I18n.format("container.gateway.flower_growth.name");
     }
 
     @Override
-    public String getModName() {
+    public @Nonnull String getModName() {
         return Tags.MOD_NAME;
     }
 
     @Override
-    public IDrawable getBackground() {
+    public @Nonnull IDrawable getBackground() {
         return background;
     }
 
-
     @Override
-    public void setRecipe(IRecipeLayout layout, FlowerGrowthRecipe recipe, IIngredients ingredients) {
-        layout.getItemStacks().addTooltipCallback(recipe);
-
+    public void setRecipe(IRecipeLayout layout, @Nonnull FlowerGrowthRecipe recipe, IIngredients ingredients) {
         IGuiItemStackGroup group = layout.getItemStacks();
+        group.addTooltipCallback(recipe);
+
         group.init(0, true, 0, 2);
         group.set(0, ingredients.getInputs(VanillaTypes.ITEM).get(0));
         group.init(1, false, 68, 2);

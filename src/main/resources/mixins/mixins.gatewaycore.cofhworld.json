@@ -1,0 +1,13 @@
+{
+  "package": "com.dimensional.gatewaycore.mixins.cofhworld",
+  "refmap": "mixins.gatewaycore.refmap.json",
+  "target": "@env(DEFAULT)",
+  "minVersion": "0.8",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "DistributionCaveMixin",
+    "DistributionGaussianMixin",
+    "DistributionUniformMixin",
+    "WorldGenMinableClusterMixin"
+  ]
+}
