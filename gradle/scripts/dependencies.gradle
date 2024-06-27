@@ -7,6 +7,7 @@ def debug_botania = false
 def debug_groovyscript = false
 def debug_gamestages = false
 def debug_cofh_world = false
+def debug_block_drops = false
 
 final def mod_dependencies = [
         'jei-238222:5101347': [true],
@@ -23,6 +24,7 @@ final def mod_dependencies = [
         'gamestages-268655:2951840': [debug_gamestages],
         'bookshelf-228525:2836960': [debug_gamestages],
         'cofh-world-271384:2920434': [debug_cofh_world],
+        'block-drops-jei-addon-244181:2509046': [debug_block_drops],
 ]
 
 final def runtime_dependencies = [

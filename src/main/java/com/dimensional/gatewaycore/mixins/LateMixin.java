@@ -10,7 +10,8 @@ public class LateMixin implements ILateMixinLoader {
 
     public static final List<String> modMixins = ImmutableList.of(
         "tinkers",
-        "cofhworld"
+        "cofhworld",
+        "blockdrops"
     );
 
     @Override
