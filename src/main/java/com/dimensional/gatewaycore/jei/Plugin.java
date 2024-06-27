@@ -10,6 +10,7 @@ import com.dimensional.gatewaycore.jei.cofhworld.CoFHWorldRecipe;
 import com.dimensional.gatewaycore.jei.immersive.MultiblockRecipe;
 import com.dimensional.gatewaycore.jei.immersive.MultiblockRecipeCategory;
 import com.dimensional.gatewaycore.jei.immersive.MultiblockToResultMap;
+import com.dimensional.gatewaycore.jei.immersive.PetroleumMultiblocks;
 import epicsquid.roots.init.ModItems;
 import epicsquid.roots.init.ModRecipes;
 import epicsquid.roots.recipe.FlowerRecipe;
@@ -74,6 +75,10 @@ public class Plugin implements IModPlugin {
 
         if (Loader.isModLoaded("immersiveengineering")) {
             MultiblockToResultMap.init();
+            if (Loader.isModLoaded("immersivepetroleum")) {
+                PetroleumMultiblocks.init();
+            }
+
             GatewayCore.LOGGER.info("Loading Immersive Engineering recipes...");
 
             IGuiHelper h = registry.getJeiHelpers().getGuiHelper();

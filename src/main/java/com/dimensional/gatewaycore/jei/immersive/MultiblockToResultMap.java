@@ -20,6 +20,10 @@ public class MultiblockToResultMap {
     private static final Map<Class<? extends MultiblockHandler.IMultiblock>, ItemStack> theMap = new HashMap<>();
     private static boolean initialized = false;
 
+    public static void addPreview(Class<? extends MultiblockHandler.IMultiblock> multiblock, ItemStack preview) {
+        theMap.put(multiblock, preview);
+    }
+
     public static void init() {
         if (initialized) return;
         initialized = true;
@@ -64,13 +68,6 @@ public class MultiblockToResultMap {
             new ItemStack(IEContent.blockMetalMultiblock, 1, BlockTypes_MetalMultiblock.SILO.getMeta()));
         theMap.put(MultiblockSqueezer.class,
             new ItemStack(IEContent.blockMetalMultiblock, 1, BlockTypes_MetalMultiblock.SQUEEZER.getMeta()));
-
-        if (Loader.isModLoaded("immersivepetroleum")) {
-            theMap.put(MultiblockPumpjack.class,
-                new ItemStack(IPContent.blockMetalMultiblock, 1, BlockTypes_IPMetalMultiblock.PUMPJACK.getMeta()));
-            theMap.put(MultiblockDistillationTower.class,
-                new ItemStack(IPContent.blockMetalMultiblock, 1, BlockTypes_IPMetalMultiblock.DISTILLATION_TOWER.getMeta()));
-        }
     }
 
     public static @Nullable ItemStack getOutputStack(MultiblockHandler.IMultiblock mb) {

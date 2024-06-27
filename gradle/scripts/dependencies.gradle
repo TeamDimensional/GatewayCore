@@ -8,8 +8,8 @@ def debug_groovyscript = false
 def debug_gamestages = false
 def debug_cofh_world = false
 def debug_block_drops = false
-def debug_immersive_engineering = true
-def debug_immersive_petroleum = true
+def debug_immersive_engineering = false
+def debug_immersive_petroleum = false
 
 final def mod_dependencies = [
         'jei-238222:5101347': [true],
