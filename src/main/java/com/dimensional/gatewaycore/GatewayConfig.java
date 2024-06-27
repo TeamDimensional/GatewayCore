@@ -21,6 +21,7 @@ public class GatewayConfig {
     public static boolean showItemTiers = true;
 
     @Config.Comment("Should we prevent Block Drops from generating the drops file if possible?")
+    @Config.RequiresMcRestart
     public static boolean stopBlockDropsCaching = true;
 
     public static boolean tinkerOverridesNeeded() {

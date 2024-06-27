@@ -8,6 +8,8 @@ def debug_groovyscript = false
 def debug_gamestages = false
 def debug_cofh_world = false
 def debug_block_drops = false
+def debug_immersive_engineering = true
+def debug_immersive_petroleum = true
 
 final def mod_dependencies = [
         'jei-238222:5101347': [true],
@@ -25,12 +27,15 @@ final def mod_dependencies = [
         'bookshelf-228525:2836960': [debug_gamestages],
         'cofh-world-271384:2920434': [debug_cofh_world],
         'block-drops-jei-addon-244181:2509046': [debug_block_drops],
+        'immersive-engineering-231951:2974106': [debug_immersive_engineering, debug_immersive_petroleum],
+        'immersive-petroleum-268250:3382321': [debug_immersive_petroleum],
 ]
 
 final def runtime_dependencies = [
         'hwyla-253449:2568751': [true],
         'tinkers-jei-291786:2701203': [debug_tinker],
         'groovyscript-687577:5439031': [debug_groovyscript],
+        'just-enough-petroleum-291727:2549332': [debug_immersive_petroleum],
 ]
 
 repositories {

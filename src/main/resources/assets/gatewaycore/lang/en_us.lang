@@ -1,5 +1,6 @@
 container.gateway.flower_growth.name=Flower Growth Ritual
 container.gateway.cofh_world.name=World Generation
+container.gateway.ie_multiblock.name=Multiblock Construction
 
 material.gateway_flint.name=Flint
 material.gateway_wood.name=Wood
