@@ -42,8 +42,8 @@ public class TooltipEvents {
     private static final Set<String> gated = new HashSet<>();
     private static final Map<String, String> tooltips = new HashMap<>();
     private static final Map<Integer, String> tierNames = new HashMap<>();
-    private static final List<PredicateWithText> predicates = new ArrayList<>();
-    private static final List<PredicateWithNumber> tierPredicates = new ArrayList<>();
+    private static final Map<String, PredicateWithText> predicates = new HashMap<>();
+    private static final Map<String, PredicateWithNumber> tierPredicates = new HashMap<>();
 
     private static String stringify(ItemStack item) {
         return item.getItem().getRegistryName() + "@" + item.getMetadata();
@@ -91,11 +91,19 @@ public class TooltipEvents {
     }
 
     public static void addPredicate(StackPredicate p, String s) {
-        predicates.add(new PredicateWithText(p, s));
+        addPredicate(UUID.randomUUID().toString(), p, s);
     }
 
     public static void addTierPredicate(StackPredicate p, int s) {
-        tierPredicates.add(new PredicateWithNumber(p, s));
+        addTierPredicate(UUID.randomUUID().toString(), p, s);
+    }
+
+    public static void addPredicate(String n, StackPredicate p, String s) {
+        predicates.put(n, new PredicateWithText(p, s));
+    }
+
+    public static void addTierPredicate(String n, StackPredicate p, int s) {
+        tierPredicates.put(n, new PredicateWithNumber(p, s));
     }
 
     public static void setTierName(int tier, String name) {
@@ -116,7 +124,7 @@ public class TooltipEvents {
     }
 
     private static int getTier(ItemStack stack) {
-        for (PredicateWithNumber pair : tierPredicates) {
+        for (PredicateWithNumber pair : tierPredicates.values()) {
             if (pair.ps.satisfies(stack)) {
                 return pair.s;
             }
@@ -145,7 +153,7 @@ public class TooltipEvents {
         String tt = tooltips.get(key);
         if (tt != null) output.add(tt);
         // Predicates
-        for (PredicateWithText pair : predicates) {
+        for (PredicateWithText pair : predicates.values()) {
             if (pair.ps.satisfies(stack)) {
                 output.add(pair.s);
             }
