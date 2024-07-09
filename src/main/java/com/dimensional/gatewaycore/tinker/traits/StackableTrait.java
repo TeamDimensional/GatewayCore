@@ -77,7 +77,13 @@ public abstract class StackableTrait extends AbstractTrait {
     }
 
     protected int getLevel(ItemStack tool) {
-        NBTTagCompound modifierNBT = TinkerUtil.getModifierTag(tool, "gateway_crude");
+        NBTTagCompound modifierNBT = TinkerUtil.getModifierTag(tool, getModifierIdentifier());
+        ModifierNBT data = new ModifierNBT(modifierNBT);
+        return data.level;
+    }
+
+    protected int getLevel(NBTTagCompound rootCompound) {
+        NBTTagCompound modifierNBT = TinkerUtil.getModifierTag(rootCompound, getModifierIdentifier());
         ModifierNBT data = new ModifierNBT(modifierNBT);
         return data.level;
     }

@@ -1,0 +1,9 @@
+{
+  "type": "metal",
+  "parameters": {
+    "color": "d188d1",
+    "shinyness": 0.5,
+    "brightness": 0.32,
+    "hueshift": 0
+  }
+}

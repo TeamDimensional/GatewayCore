@@ -2,6 +2,7 @@ package com.dimensional.gatewaycore.tinker;
 
 import com.dimensional.gatewaycore.GatewayConfig;
 import com.dimensional.gatewaycore.GatewayCore;
+import com.dimensional.gatewaycore.tinker.modded.*;
 import com.dimensional.gatewaycore.tinker.traits.*;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -20,6 +21,7 @@ import java.util.Set;
 
 public class MaterialRegistry {
 
+    // Tier 1+
     public static final StackableTrait ecological = new StackableEcological();
     public static final StackableTrait ecological2 = new StackableEcological(2);
     public static final StackableTrait crude = new StackableCrude();
@@ -27,13 +29,18 @@ public class MaterialRegistry {
     public static final AbstractTrait stonebreaker = new TraitStonebreaker();
     public static final AbstractTrait strike = new TraitStrike();
     public static final AbstractTrait activation = new TraitActivation();
-    public static final AbstractTrait slowdown = new TraitBonusSpeed("slowdown", -2.4f);
+    public static final AbstractTrait slowdown = new TraitBonusSpeed("slowdown", -2.0f);
     public static final AbstractTrait naturalSelection = new TraitNaturalSelection();
+    // Tier 2+
+    public static final StackableTrait lightweight = new StackableLightweight();
+    public static final AbstractTrait otherworldly = new TraitOtherworldly();
+    public static final AbstractTrait cheap = new TraitVeryCheap();
+    public static final AbstractTrait moonlit = new TraitMoonlit();
 
     private static final Map<String, Material> customMaterials = new HashMap<>();
     private static final Set<String> allowedMaterials = new HashSet<>();
 
-    private static Material wood, flint, netherrack, bone, elementalBlock, livingrock, livingwood;
+    private static Material wood, flint, netherrack, bone;
 
     public static boolean materialExists(String mat) {
         return customMaterials.containsKey(mat);
@@ -58,13 +65,12 @@ public class MaterialRegistry {
     }
 
     public static void createMaterials() {
-
+        /* Vanilla materials */
         /* Tier 1 materials */
         // Wood
         wood = new GatewayMaterial("wood", 0x8e661b).setCraftable(true);
         wood.addItem("stickWood", 1, Material.VALUE_Shard);
         wood.addItem("plankWood", 1, Material.VALUE_Ingot);
-        wood.addItem("logWood", 1, Material.VALUE_Ingot * 4);
         wood.setRepresentativeItem(new ItemStack(Blocks.PLANKS));
         wood.addTrait(ecological, MaterialTypes.HANDLE);
         wood.addTrait(ecological, MaterialTypes.EXTRA);
@@ -86,7 +92,7 @@ public class MaterialRegistry {
         netherrack.setRepresentativeItem(Blocks.NETHERRACK);
         netherrack.addTrait(stonebreaker, MaterialTypes.EXTRA);
         netherrack.addTrait(TinkerTraits.hellish, MaterialTypes.HEAD);
-        TinkerRegistry.addMaterialStats(netherrack, new HeadMaterialStats(270, 4.0f, 2.4f, 0), new ExtraMaterialStats(-15));
+        TinkerRegistry.addMaterialStats(netherrack, new HeadMaterialStats(270, 4.0f, 1.9f, 0), new ExtraMaterialStats(-15));
         register(netherrack);
 
         // Bone
@@ -102,39 +108,11 @@ public class MaterialRegistry {
             new HandleMaterialStats(1.1f, 50));
         register(bone);
 
-        // Elemental Block
-        if (Loader.isModLoaded("essentialcraft")) {
-            elementalBlock = new GatewayMaterial("elemental_block", 0xcf83ee).setCraftable(true);
-            elementalBlock.addItem("blockElemental", 1, Material.VALUE_Ingot);
-            elementalBlock.setRepresentativeItem("blockElemental");
-            elementalBlock.addTrait(activation, MaterialTypes.HEAD);
-            elementalBlock.addTrait(slowdown, MaterialTypes.HANDLE);
-            TinkerRegistry.addMaterialStats(elementalBlock,
-                new HeadMaterialStats(600, 5.0f, 1.0f, 0),
-                new HandleMaterialStats(1.7f, 0));
-            register(elementalBlock);
-        }
-
-        if (Loader.isModLoaded("botania")) {
-            livingwood = new GatewayMaterial("livingwood", 0x702808).setCraftable(true);
-            livingwood.addItem("livingwood", 1, Material.VALUE_Ingot);
-            livingwood.setRepresentativeItem("livingwood");
-            livingwood.addTrait(naturalSelection, MaterialTypes.HANDLE);
-            livingwood.addTrait(ecological2, MaterialTypes.EXTRA);
-            TinkerRegistry.addMaterialStats(livingwood,
-                new ExtraMaterialStats(30),
-                new HandleMaterialStats(0.6f, 30));
-            register(livingwood);
-
-            livingrock = new GatewayMaterial("livingrock", 0xd7dac7).setCraftable(true);
-            livingrock.addItem("livingrock", 1, Material.VALUE_Ingot);
-            livingrock.setRepresentativeItem("livingrock");
-            livingrock.addTrait(TinkerTraits.stonebound, MaterialTypes.HEAD);
-            livingrock.addTrait(ecological, MaterialTypes.EXTRA);
-            TinkerRegistry.addMaterialStats(livingrock,
-                new HeadMaterialStats(150, 4.5f, 2.5f, 0),
-                new ExtraMaterialStats(50));
-        }
+        /* Modded materials */
+        if (Loader.isModLoaded("botania")) BotaniaMaterials.addMaterials();
+        if (Loader.isModLoaded("essentialcraft")) EssentialcraftMaterials.addMaterials();
+        if (Loader.isModLoaded("theaurorian")) AurorianMaterials.addMaterials();
+        if (Loader.isModLoaded("naturesaura")) NaturesAuraMaterials.addMaterials();
     }
 
     public static void registerMaterials() {
@@ -144,18 +122,16 @@ public class MaterialRegistry {
             TinkerRegistry.addMaterial(netherrack);
             TinkerRegistry.addMaterial(bone);
         }
-        if (GatewayConfig.createTinkerMats) {
 
-            if (Loader.isModLoaded("essentialcraft")) {
-                TinkerRegistry.addMaterial(elementalBlock);
-            }
+        if (Loader.isModLoaded("botania")) BotaniaMaterials.registerMaterials();
+        if (Loader.isModLoaded("essentialcraft")) EssentialcraftMaterials.registerMaterials();
+        if (Loader.isModLoaded("theaurorian")) AurorianMaterials.registerMaterials();
+        if (Loader.isModLoaded("naturesaura")) NaturesAuraMaterials.registerMaterials();
+    }
 
-            if (Loader.isModLoaded("botania")) {
-                TinkerRegistry.addMaterial(livingwood);
-                TinkerRegistry.addMaterial(livingrock);
-            }
-
-        }
+    public static void postInit() {
+        if (Loader.isModLoaded("theaurorian")) AurorianMaterials.postInit();
+        if (Loader.isModLoaded("naturesaura")) NaturesAuraMaterials.postInit();
     }
 
     public static void setup() {
