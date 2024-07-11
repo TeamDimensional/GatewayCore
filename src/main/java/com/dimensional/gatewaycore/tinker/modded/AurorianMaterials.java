@@ -34,7 +34,7 @@ public class AurorianMaterials {
         crystal = new GatewayMaterial("crystal", 0xd188d1).setCraftable(true);
         crystal.addTrait(MaterialRegistry.moonlit);
         TinkerRegistry.addMaterialStats(crystal,
-            new HeadMaterialStats(400, 5.5f, 2f, 1),
+            new HeadMaterialStats(350, 5.5f, 2f, 1),
             new ExtraMaterialStats(80));
         MaterialRegistry.register(crystal);
     }

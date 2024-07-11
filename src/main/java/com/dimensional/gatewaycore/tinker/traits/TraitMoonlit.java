@@ -16,10 +16,6 @@ public class TraitMoonlit extends AbstractTrait {
             if (random.nextInt(5) == 0) {
                 newDamage = 0;
             }
-        } else if (entity.world.isDaytime()) {
-            if (random.nextInt(5) == 0) {
-                newDamage *= 2;
-            }
         }
         return newDamage;
     }
