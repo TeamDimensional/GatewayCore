@@ -1,4 +1,4 @@
-package com.dimensional.gatewaycore.jei;
+package com.dimensional.gatewaycore.jei.roots;
 
 import epicsquid.roots.recipe.FlowerRecipe;
 import mezz.jei.api.gui.ITooltipCallback;

@@ -1,6 +1,7 @@
-package com.dimensional.gatewaycore.jei;
+package com.dimensional.gatewaycore.jei.roots;
 
 import com.dimensional.gatewaycore.Tags;
+import com.dimensional.gatewaycore.jei.Plugin;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IGuiItemStackGroup;
