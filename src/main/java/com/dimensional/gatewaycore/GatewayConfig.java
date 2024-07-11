@@ -27,6 +27,9 @@ public class GatewayConfig {
     @Config.Comment("Should we show fluid tooltips, similar to item tooltips, when Advanced Tooltips (F3+H) is active?")
     public static boolean showFluidTooltips = true;
 
+    @Config.Comment("Should we disable Tinker's Construct from scanning all recipes during Post-Init?")
+    public static boolean disableTinkerRecipeScan = true;
+
     public static boolean tinkerOverridesNeeded() {
         return removeTinkerMats || replaceTinkerMats;
     }
