@@ -1,6 +1,7 @@
 package com.dimensional.gatewaycore.mixins;
 
 import com.google.common.collect.ImmutableList;
+import net.minecraftforge.fml.common.Loader;
 import zone.rong.mixinbooter.ILateMixinLoader;
 
 import java.util.List;
@@ -11,11 +12,15 @@ public class LateMixin implements ILateMixinLoader {
     public static final List<String> modMixins = ImmutableList.of(
         "tinkers",
         "cofhworld",
-        "blockdrops"
+        "blockdrops",
+        "jei"
     );
 
     @Override
     public List<String> getMixinConfigs() {
-        return modMixins.stream().map(mod -> "mixins/mixins.gatewaycore." + mod + ".json").collect(Collectors.toList());
+        return modMixins.stream()
+            .filter(Loader::isModLoaded)
+            .map(mod -> "mixins/mixins.gatewaycore." + mod + ".json")
+            .collect(Collectors.toList());
     }
 }

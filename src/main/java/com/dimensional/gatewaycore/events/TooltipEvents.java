@@ -1,164 +1,178 @@
 package com.dimensional.gatewaycore.events;
 
 import com.dimensional.gatewaycore.GatewayConfig;
+import com.dimensional.gatewaycore.GatewayCore;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
+import net.minecraftforge.fluids.BlockFluidBase;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.darkhax.gamestages.GameStageHelper;
 
+import javax.annotation.Nullable;
 import java.util.*;
 
 @Mod.EventBusSubscriber
 public class TooltipEvents {
 
-    public interface StackPredicate {
-        boolean satisfies(ItemStack stack);
-    }
-
-    private static class PredicateWithText {
-        final StackPredicate ps;
-        final String s;
-        PredicateWithText(StackPredicate predicate, String text) {
-            ps = predicate;
-            s = text;
-        }
-    }
-
-    private static class PredicateWithNumber {
-        final StackPredicate ps;
-        final int s;
-        PredicateWithNumber(StackPredicate predicate, int tier) {
-            ps = predicate;
-            s = tier;
-        }
-    }
-
-    private static final Map<String, Integer> tiers = new HashMap<>();
-    private static final Set<String> unlocks = new HashSet<>();
-    private static final Set<String> gated = new HashSet<>();
-    private static final Map<String, String> tooltips = new HashMap<>();
     private static final Map<Integer, String> tierNames = new HashMap<>();
-    private static final Map<String, PredicateWithText> predicates = new HashMap<>();
-    private static final Map<String, PredicateWithNumber> tierPredicates = new HashMap<>();
-
-    private static String stringify(ItemStack item) {
-        return item.getItem().getRegistryName() + "@" + item.getMetadata();
-    }
-
-    public static void setTier(String item, int tier) {
-        tiers.put(item, tier);
-    }
+    private static final TooltipStorage<ItemStack> stackStorage = new TooltipStorage<>(
+        stack -> stack.getItem().getRegistryName() + "@" + stack.getMetadata());
+    private static final TooltipStorage<FluidStack> fluidStorage = new TooltipStorage<>(FluidStack::getUnlocalizedName);
 
     public static void setTier(ItemStack item, int tier) {
-        setTier(stringify(item), tier);
-    }
-
-    public static void setUnlock(String item, int tier) {
-        setTier(item, tier - 1);
-        unlocks.add(item);
+        stackStorage.setTier(item, tier);
     }
 
     public static void setUnlock(ItemStack item, int tier) {
-        setUnlock(stringify(item), tier);
-    }
-
-    public static void setGated(String item) {
-        gated.add(item);
+        stackStorage.setUnlock(item, tier);
     }
 
     public static void setGated(ItemStack item) {
-        setGated(stringify(item));
+        stackStorage.setGated(item);
     }
 
-    public static void setTooltipBase(String item, String tooltip) {
-        tooltips.put(item, tooltip);
+    public static void setTier(FluidStack item, int tier) {
+        fluidStorage.setTier(item, tier);
     }
 
-    public static void setTooltipBase(ItemStack item, String tooltip) {
-        setTooltipBase(stringify(item), tooltip);
+    public static void setUnlock(FluidStack item, int tier) {
+        fluidStorage.setUnlock(item, tier);
+    }
+
+    public static void setGated(FluidStack item) {
+        fluidStorage.setGated(item);
     }
 
     public static void setTooltip(ItemStack item, String tooltip, TextFormatting tf) {
-        setTooltipBase(item, tf.toString() + tooltip);
+        stackStorage.setTooltip(item, tf.toString() + tooltip);
     }
 
     public static void setTooltip(ItemStack item, String tooltip) {
-        setTooltipBase(item, TextFormatting.YELLOW.toString() + tooltip);
+        stackStorage.setTooltip(item, TextFormatting.YELLOW.toString() + tooltip);
     }
 
-    public static void addPredicate(StackPredicate p, String s) {
+    public static void setTooltip(FluidStack item, String tooltip, TextFormatting tf) {
+        fluidStorage.setTooltip(item, tf.toString() + tooltip);
+    }
+
+    public static void setTooltip(FluidStack item, String tooltip) {
+        fluidStorage.setTooltip(item, TextFormatting.YELLOW.toString() + tooltip);
+    }
+
+    public static void addPredicate(TooltipStorage.StackPredicate<ItemStack> p, String s) {
         addPredicate(UUID.randomUUID().toString(), p, s);
     }
 
-    public static void addTierPredicate(StackPredicate p, int s) {
+    public static void addTierPredicate(TooltipStorage.StackPredicate<ItemStack> p, int s) {
         addTierPredicate(UUID.randomUUID().toString(), p, s);
     }
 
-    public static void addPredicate(String n, StackPredicate p, String s) {
-        predicates.put(n, new PredicateWithText(p, s));
+    public static void addPredicate(String n, TooltipStorage.StackPredicate<ItemStack> p, String s) {
+        stackStorage.addPredicate(n, p, s);
     }
 
-    public static void addTierPredicate(String n, StackPredicate p, int s) {
-        tierPredicates.put(n, new PredicateWithNumber(p, s));
+    public static void addTierPredicate(String n, TooltipStorage.StackPredicate<ItemStack> p, int s) {
+        stackStorage.addTierPredicate(n, p, s);
+    }
+
+    public static void addFluidPredicate(TooltipStorage.StackPredicate<FluidStack> p, String s) {
+        addFluidPredicate(UUID.randomUUID().toString(), p, s);
+    }
+
+    public static void addFluidTierPredicate(TooltipStorage.StackPredicate<FluidStack> p, int s) {
+        addFluidTierPredicate(UUID.randomUUID().toString(), p, s);
+    }
+
+    public static void addFluidPredicate(String n, TooltipStorage.StackPredicate<FluidStack> p, String s) {
+        fluidStorage.addPredicate(n, p, s);
+    }
+
+    public static void addFluidTierPredicate(String n, TooltipStorage.StackPredicate<FluidStack> p, int s) {
+        fluidStorage.addTierPredicate(n, p, s);
     }
 
     public static void setTierName(int tier, String name) {
         tierNames.put(tier, name);
     }
 
-    private static String getTierText(int tier) {
+    public static String getTierText(int tier) {
         if (tier < 0) return "Future content";
         if (tierNames.containsKey(tier)) return "Tier " + tier + " - " + tierNames.get(tier);
         return "Tier " + tier;
     }
 
-    private static boolean hasTier(EntityPlayer player, int tier) {
+    public static boolean hasTier(EntityPlayer player, int tier) {
         if (!Loader.isModLoaded("gamestages") || tier == 1) {
             return true;
         }
         return GameStageHelper.hasStage(player, "tier" + tier);
     }
 
-    private static int getTier(ItemStack stack) {
-        for (PredicateWithNumber pair : tierPredicates.values()) {
-            if (pair.ps.satisfies(stack)) {
-                return pair.s;
-            }
-        }
-        String key = stringify(stack);
-        return tiers.getOrDefault(key, 1);
+    @Nullable
+    private static FluidStack getFluidInStack(ItemStack stack) {
+        FluidStack fluid = FluidUtil.getFluidContained(stack);
+        if (fluid != null) return fluid;
+
+        if (!(stack.getItem() instanceof ItemBlock)) return null;
+        ItemBlock ib = (ItemBlock) stack.getItem();
+        if (!(ib.getBlock() instanceof BlockFluidBase)) return null;
+        BlockFluidBase bfb = (BlockFluidBase) ib.getBlock();
+        return new FluidStack(bfb.getFluid(), 1000);
     }
 
-    private static List<String> getTooltips(ItemStack stack, EntityPlayer player) {
+    private static int getTier(ItemStack stack) {
+        int tier = stackStorage.getTier(stack);
+        FluidStack fluid = getFluidInStack(stack);
+        if (fluid != null)
+            tier = Math.max(tier, fluidStorage.getTier(fluid));
+        return tier;
+    }
+
+    private static boolean isGated(ItemStack stack) {
+        if (stackStorage.isGated(stack)) return true;
+        FluidStack fluid = getFluidInStack(stack);
+        return fluid != null && fluidStorage.isGated(fluid);
+    }
+
+    public static List<String> getTooltips(ItemStack stack, EntityPlayer player) {
         List<String> output = new LinkedList<>();
+
         int tier = getTier(stack);
-        String key = stringify(stack);
-        boolean isGated = gated.contains(key);
-        if (isGated) {
+        if (isGated(stack)) {
             // Gated
             output.add(TextFormatting.AQUA + "This item is gated! Its recipe was temporarily removed.");
         } else if (GatewayConfig.showItemTiers && tier != 0) {
             // Tier
-            TextFormatting color = hasTier(player, tier) ? TextFormatting.GREEN : TextFormatting.RED;
-            output.add(color + getTierText(tier));
-        }
-        // Unlock
-        boolean unlock = unlocks.contains(key);
-        if (unlock) output.add(TextFormatting.AQUA + "Unlocks tier " + (tier + 1));
-        // Tooltip
-        String tt = tooltips.get(key);
-        if (tt != null) output.add(tt);
-        // Predicates
-        for (PredicateWithText pair : predicates.values()) {
-            if (pair.ps.satisfies(stack)) {
-                output.add(pair.s);
-            }
+            TextFormatting color = TooltipEvents.hasTier(player, tier) ? TextFormatting.GREEN : TextFormatting.RED;
+            output.add(color + TooltipEvents.getTierText(tier));
         }
 
+        output.addAll(stackStorage.getTooltips(stack));
+        FluidStack fluid = getFluidInStack(stack);
+        if (fluid != null)
+            output.addAll(fluidStorage.getTooltips(fluid));
+        return output;
+    }
+
+    public static List<String> getTooltips(FluidStack stack, EntityPlayer player) {
+        List<String> output = new LinkedList<>();
+
+        int tier = fluidStorage.getTier(stack);
+        if (fluidStorage.isGated(stack)) {
+            output.add(TextFormatting.AQUA + "This item is gated! Its recipe was temporarily removed.");
+        } else if (GatewayConfig.showItemTiers && tier != 0) {
+            TextFormatting color = TooltipEvents.hasTier(player, tier) ? TextFormatting.GREEN : TextFormatting.RED;
+            output.add(color + TooltipEvents.getTierText(tier));
+        }
+
+        output.addAll(fluidStorage.getTooltips(stack));
         return output;
     }
 
