@@ -21,7 +21,6 @@ public class GatewayCore {
     public GatewayCore() {
         if (Loader.isModLoaded("tconstruct")) {
             MinecraftForge.EVENT_BUS.register(TinkerEvents.class);
-            MaterialRegistry.setup();
         }
     }
 
@@ -29,6 +28,7 @@ public class GatewayCore {
     public void preInit(FMLPreInitializationEvent e) {
         if (Loader.isModLoaded("tconstruct") && (GatewayConfig.tinkerOverridesNeeded() || GatewayConfig.createTinkerMats)) {
             LOGGER.info("Creating our Tinker's materials...");
+            MaterialRegistry.setup();
             MaterialRegistry.registerMaterials();
         }
     }

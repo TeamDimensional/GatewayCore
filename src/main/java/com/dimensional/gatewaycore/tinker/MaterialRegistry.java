@@ -14,10 +14,7 @@ import slimeknights.tconstruct.library.traits.AbstractTrait;
 import slimeknights.tconstruct.tools.TinkerTraits;
 import slimeknights.tconstruct.tools.traits.TraitBonusSpeed;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class MaterialRegistry {
 
@@ -135,15 +132,7 @@ public class MaterialRegistry {
     }
 
     public static void setup() {
-        allowedMaterials.add("string");
-        allowedMaterials.add("vine");
-        allowedMaterials.add("reed");
-        allowedMaterials.add("ice");
-        allowedMaterials.add("feather");
-        allowedMaterials.add("leaf");
-        allowedMaterials.add("slimeleaf_blue");
-        allowedMaterials.add("slimeleaf_orange");
-        allowedMaterials.add("slimeleaf_purple");
+        allowedMaterials.addAll(Arrays.asList(GatewayConfig.allowedTinkerMaterials));
 
         createMaterials();
     }
