@@ -1,9 +1,11 @@
 package com.dimensional.gatewaycore.mixins.jei;
 
+import com.dimensional.gatewaycore.GatewayConfig;
 import com.dimensional.gatewaycore.events.TooltipEvents;
 import mezz.jei.plugins.vanilla.ingredients.fluid.FluidStackRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fluids.FluidStack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -20,6 +22,9 @@ public class FluidStackRendererMixin {
         at = @At("RETURN")
     )
     public void onGetTooltip(Minecraft minecraft, FluidStack fluidStack, ITooltipFlag tooltipFlag, CallbackInfoReturnable<List<String>> cir) {
+        if (tooltipFlag.isAdvanced() && GatewayConfig.showFluidTooltips) {
+            cir.getReturnValue().add(TextFormatting.DARK_GRAY.toString() + fluidStack.getFluid().getName());
+        }
         cir.getReturnValue().addAll(TooltipEvents.getTooltips(fluidStack, minecraft.player));
     }
 

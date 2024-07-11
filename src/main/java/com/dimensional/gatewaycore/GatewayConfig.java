@@ -24,6 +24,9 @@ public class GatewayConfig {
     @Config.RequiresMcRestart
     public static boolean stopBlockDropsCaching = true;
 
+    @Config.Comment("Should we show fluid tooltips, similar to item tooltips, when Advanced Tooltips (F3+H) is active?")
+    public static boolean showFluidTooltips = true;
+
     public static boolean tinkerOverridesNeeded() {
         return removeTinkerMats || replaceTinkerMats;
     }
