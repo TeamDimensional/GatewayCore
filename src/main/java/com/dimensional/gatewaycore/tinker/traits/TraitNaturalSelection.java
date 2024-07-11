@@ -11,13 +11,14 @@ import slimeknights.tconstruct.library.Util;
 import slimeknights.tconstruct.library.traits.AbstractTrait;
 import slimeknights.tconstruct.library.utils.TagUtil;
 import slimeknights.tconstruct.library.utils.Tags;
-import slimeknights.tconstruct.library.utils.TinkerUtil;
 
 import java.util.List;
 
 public class TraitNaturalSelection extends AbstractTrait {
     private final static int level1 = 200;
     private final static int level2 = 500;
+
+    private final String tagName = "gateway:NaturalSelectionExp";
 
     public TraitNaturalSelection() {
         super("naturalselection", 0x795a2b);
@@ -32,18 +33,34 @@ public class TraitNaturalSelection extends AbstractTrait {
     @Override
     public void afterHit(ItemStack tool, EntityLivingBase player, EntityLivingBase target, float damageDealt, boolean wasCritical, boolean wasHit) {
         super.afterHit(tool, player, target, damageDealt, wasCritical, wasHit);
-        addExperience(tool, (int) damageDealt);
+        addExperience(tool, Math.max((int) (damageDealt / 2.5f), 1));
+    }
+
+    private static int getModifierCount(int xp) {
+        if (xp < level1) return 0;
+        if (xp < level2) return 1;
+        return 2;
+    }
+
+    @Override
+    public void applyEffect(NBTTagCompound rootCompound, NBTTagCompound modifierTag) {
+        super.applyEffect(rootCompound, modifierTag);
+        int exp = rootCompound.getInteger(tagName);
+        int mods = getModifierCount(exp);
+        NBTTagCompound toolTag = TagUtil.getToolTag(rootCompound);
+        toolTag.setInteger(Tags.FREE_MODIFIERS, toolTag.getInteger(Tags.FREE_MODIFIERS) + mods);
     }
 
     private void addExperience(ItemStack tool, int expBonus) {
-        NBTTagCompound tag = TinkerUtil.getModifierTag(tool, identifier);
-        int oldXp = tag.getInteger("selection_xp");
+        NBTTagCompound tag = TagUtil.getTagSafe(tool);
+        int oldXp = tag.getInteger(tagName);
         int newXp = Math.min(oldXp + expBonus, level2);
-        boolean shouldGiveMod = (newXp == level2 && oldXp < level2) || (newXp >= level1 && oldXp < level1);
-        tag.setInteger("selection_xp", newXp);
-        if (shouldGiveMod) {
+        tag.setInteger(tagName, newXp);
+
+        int addedMods = getModifierCount(newXp) - getModifierCount(oldXp);
+        if (addedMods > 0) {
             NBTTagCompound toolTag = TagUtil.getToolTag(tool.getTagCompound());
-            int modifiers = toolTag.getInteger(Tags.FREE_MODIFIERS)+1;
+            int modifiers = toolTag.getInteger(Tags.FREE_MODIFIERS) + addedMods;
             toolTag.setInteger(Tags.FREE_MODIFIERS, Math.max(0, modifiers));
             TagUtil.setToolTag(tool.getTagCompound(), toolTag);
         }
@@ -51,7 +68,8 @@ public class TraitNaturalSelection extends AbstractTrait {
 
     @Override
     public List<String> getExtraInfo(ItemStack tool, NBTTagCompound modifierTag) {
-        int experience = modifierTag.getInteger("selection_xp");
+        NBTTagCompound tag = TagUtil.getTagSafe(tool);
+        int experience = tag.getInteger(tagName);
         int targetExperience = 0;
         if (experience < level1) {
             targetExperience = level1;
