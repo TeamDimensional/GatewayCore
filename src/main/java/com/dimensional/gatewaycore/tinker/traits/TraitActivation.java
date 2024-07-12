@@ -11,7 +11,7 @@ import slimeknights.tconstruct.library.traits.AbstractTrait;
 import slimeknights.tconstruct.library.utils.ToolHelper;
 
 public class TraitActivation extends AbstractTrait {
-    private static final int effectDuration = 30;
+    private static final int effectDuration = 25;
 
     public TraitActivation() {
         super("activation", 0xcf83ee);
@@ -20,20 +20,20 @@ public class TraitActivation extends AbstractTrait {
     @Override
     public void afterBlockBreak(ItemStack tool, World world, IBlockState state, BlockPos pos, EntityLivingBase player, boolean wasEffective) {
         super.afterBlockBreak(tool, world, state, pos, player, wasEffective);
-        if (!wasEffective) return;
+        if (!wasEffective || world.isRemote) return;
         if (random.nextInt(100) < 2 && !player.isPotionActive(MobEffects.HASTE)) { // 1/50 chance
             ToolHelper.damageTool(tool, 10, player);
-            player.addPotionEffect(new PotionEffect(MobEffects.HASTE, 20 * effectDuration, 2));
+            player.addPotionEffect(new PotionEffect(MobEffects.HASTE, 20 * effectDuration, 1));
         }
     }
 
     @Override
     public void afterHit(ItemStack tool, EntityLivingBase player, EntityLivingBase target, float damageDealt, boolean wasCritical, boolean wasHit) {
         super.afterHit(tool, player, target, damageDealt, wasCritical, wasHit);
-        if (!wasHit) return;
+        if (!wasHit || player.world.isRemote) return;
         if ((random.nextInt(100) < 8 || wasCritical) && !player.isPotionActive(MobEffects.STRENGTH)) { // 2/25 chance
             ToolHelper.damageTool(tool, 10, player);
-            player.addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 20 * effectDuration, 2));  // 30 seconds
+            player.addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 20 * effectDuration, 1));  // 30 seconds
         }
     }
 }
