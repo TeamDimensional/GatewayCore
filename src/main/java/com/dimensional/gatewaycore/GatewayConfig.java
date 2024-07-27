@@ -30,6 +30,9 @@ public class GatewayConfig {
     @Config.Comment("Should we disable Tinker's Construct from scanning all recipes during Post-Init?")
     public static boolean disableTinkerRecipeScan = true;
 
+    @Config.Comment("Should we disable Aether's ores from generating? Intended to be used with CoFH World or similar.")
+    public static boolean disableAetherOres = true;
+
     @Config.Comment("The TiC materials that should not be deleted, even if we're deleting materials:")
     public static String[] allowedTinkerMaterials = new String[]{
         "string", "vine", "reed", "ice", "feather", "leaf", "slimeleaf_blue", "slimeleaf_orange", "slimeleaf_purple"

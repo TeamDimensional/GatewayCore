@@ -13,7 +13,8 @@ public class LateMixin implements ILateMixinLoader {
         "tconstruct",
         "cofhworld",
         "blockdrops",
-        "jei"
+        "jei",
+        "aether_legacy"
     );
 
     @Override
