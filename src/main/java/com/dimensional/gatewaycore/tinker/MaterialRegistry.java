@@ -44,9 +44,9 @@ public class MaterialRegistry {
     }
 
     public static boolean materialAllowed(String id) {
-        if (!GatewayConfig.tinkerOverridesNeeded()) return true;
-        if (GatewayConfig.replaceTinkerMats) return !customMaterials.containsKey(id);
-        // we have removeTinkerMats in here
+        if (!GatewayConfig.tConstruct.tinkerOverridesNeeded()) return true;
+        if (GatewayConfig.tConstruct.replaceMaterials) return !customMaterials.containsKey(id);
+        // we have removeAllMaterials in here
         return id.startsWith("_internal") || id.startsWith("gateway_") || allowedMaterials.contains(id);
     }
 
@@ -113,7 +113,7 @@ public class MaterialRegistry {
     }
 
     public static void registerMaterials() {
-        if (GatewayConfig.tinkerOverridesNeeded()) {
+        if (GatewayConfig.tConstruct.tinkerOverridesNeeded()) {
             TinkerRegistry.addMaterial(wood);
             TinkerRegistry.addMaterial(flint);
             TinkerRegistry.addMaterial(netherrack);
@@ -132,7 +132,7 @@ public class MaterialRegistry {
     }
 
     public static void setup() {
-        allowedMaterials.addAll(Arrays.asList(GatewayConfig.allowedTinkerMaterials));
+        allowedMaterials.addAll(Arrays.asList(GatewayConfig.tConstruct.allowedMaterials));
 
         createMaterials();
     }

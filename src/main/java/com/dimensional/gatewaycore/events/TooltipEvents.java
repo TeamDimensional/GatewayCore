@@ -148,7 +148,7 @@ public class TooltipEvents {
         if (isGated(stack)) {
             // Gated
             output.add(TextFormatting.AQUA + "This item is gated! Its recipe was temporarily removed.");
-        } else if (GatewayConfig.showItemTiers && tier != 0) {
+        } else if (GatewayConfig.vanilla.showItemTiers && tier != 0) {
             // Tier
             TextFormatting color = TooltipEvents.hasTier(player, tier) ? TextFormatting.GREEN : TextFormatting.RED;
             output.add(color + TooltipEvents.getTierText(tier));
@@ -167,7 +167,7 @@ public class TooltipEvents {
         int tier = fluidStorage.getTier(stack);
         if (fluidStorage.isGated(stack)) {
             output.add(TextFormatting.AQUA + "This item is gated! Its recipe was temporarily removed.");
-        } else if (GatewayConfig.showItemTiers && tier != 0) {
+        } else if (GatewayConfig.vanilla.showItemTiers && tier != 0) {
             TextFormatting color = TooltipEvents.hasTier(player, tier) ? TextFormatting.GREEN : TextFormatting.RED;
             output.add(color + TooltipEvents.getTierText(tier));
         }

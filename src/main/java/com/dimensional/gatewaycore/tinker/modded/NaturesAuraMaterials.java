@@ -22,7 +22,7 @@ public class NaturesAuraMaterials {
     }
 
     public static void registerMaterials() {
-        if (GatewayConfig.createTinkerMats) {
+        if (GatewayConfig.tConstruct.createCustomMaterials) {
             TinkerRegistry.addMaterial(ancientWood);
         }
     }

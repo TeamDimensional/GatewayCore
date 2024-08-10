@@ -16,8 +16,8 @@ public class TinkerEvents {
             return;
         }
 
-        if (GatewayConfig.removeTinkerMats ||
-            (GatewayConfig.replaceTinkerMats && MaterialRegistry.materialExists(id))) {
+        if (GatewayConfig.tConstruct.removeAllMaterials ||
+            (GatewayConfig.tConstruct.replaceMaterials && MaterialRegistry.materialExists(id))) {
             GatewayCore.LOGGER.info("Disabling Tinker's Construct material: {}", id);
             e.setCanceled(true);
         }

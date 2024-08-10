@@ -35,7 +35,7 @@ public class BotaniaMaterials {
     }
 
     public static void registerMaterials() {
-        if (GatewayConfig.createTinkerMats) {
+        if (GatewayConfig.tConstruct.createCustomMaterials) {
             TinkerRegistry.addMaterial(livingwood);
             TinkerRegistry.addMaterial(livingrock);
         }

@@ -28,7 +28,7 @@ public class EssentialcraftMaterials {
     }
 
     public static void registerMaterials() {
-        if (GatewayConfig.createTinkerMats) {
+        if (GatewayConfig.tConstruct.createCustomMaterials) {
             TinkerRegistry.addMaterial(elementalBlock);
         }
     }

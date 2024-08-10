@@ -12,7 +12,7 @@ import slimeknights.tconstruct.smeltery.TinkerSmeltery;
 public class TinkerSmelteryMixin {
     @Inject(method = "registerRecipeOredictMelting", at = @At("HEAD"), cancellable = true)
     private static void onRegisterRecipeOredictMelting(CallbackInfo ci) {
-        if (GatewayConfig.disableTinkerRecipeScan) {
+        if (GatewayConfig.tConstruct.disableRecipeScan) {
             GatewayCore.LOGGER.info("Stopped Tinker's Construct from adding a bazillion recipes. Yay!");
             ci.cancel();
         }

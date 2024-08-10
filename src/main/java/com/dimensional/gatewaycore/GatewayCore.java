@@ -26,7 +26,7 @@ public class GatewayCore {
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent e) {
-        if (Loader.isModLoaded("tconstruct") && (GatewayConfig.tinkerOverridesNeeded() || GatewayConfig.createTinkerMats)) {
+        if (Loader.isModLoaded("tconstruct") && (GatewayConfig.tConstruct.tinkerOverridesNeeded() || GatewayConfig.tConstruct.createCustomMaterials)) {
             LOGGER.info("Creating our Tinker's materials...");
             MaterialRegistry.setup();
             MaterialRegistry.registerMaterials();
@@ -35,7 +35,7 @@ public class GatewayCore {
 
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent e) {
-        if (Loader.isModLoaded("tconstruct") && (GatewayConfig.tinkerOverridesNeeded() || GatewayConfig.createTinkerMats)) {
+        if (Loader.isModLoaded("tconstruct") && (GatewayConfig.tConstruct.tinkerOverridesNeeded() || GatewayConfig.tConstruct.createCustomMaterials)) {
             LOGGER.info("Post-initializing TiC...");
             MaterialRegistry.postInit();
         }

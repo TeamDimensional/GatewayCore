@@ -18,7 +18,7 @@ public class AetherBiomeDecoratorMixin {
 
     @WrapOperation(method = "genDecorations", at = @At(value = "INVOKE", target = "Lnet/minecraftforge/event/terraingen/TerrainGen;generateOre(Lnet/minecraft/world/World;Ljava/util/Random;Lnet/minecraft/world/gen/feature/WorldGenerator;Lnet/minecraft/util/math/BlockPos;Lnet/minecraftforge/event/terraingen/OreGenEvent$GenerateMinable$EventType;)Z"))
     private boolean dontGenerateOre(World world, Random random, WorldGenerator worldGenerator, BlockPos blockPos, OreGenEvent.GenerateMinable.EventType eventType, Operation<Boolean> original) {
-        if (GatewayConfig.disableAetherOres) {
+        if (GatewayConfig.mods.disableAetherOres) {
             return false;
         }
         return original.call(world, random, worldGenerator, blockPos, eventType);

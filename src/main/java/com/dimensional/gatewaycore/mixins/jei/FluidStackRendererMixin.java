@@ -22,7 +22,7 @@ public class FluidStackRendererMixin {
         at = @At("RETURN")
     )
     public void onGetTooltip(Minecraft minecraft, FluidStack fluidStack, ITooltipFlag tooltipFlag, CallbackInfoReturnable<List<String>> cir) {
-        if (tooltipFlag.isAdvanced() && GatewayConfig.showFluidTooltips) {
+        if (tooltipFlag.isAdvanced() && GatewayConfig.vanilla.showFluidTooltips) {
             cir.getReturnValue().add(TextFormatting.DARK_GRAY.toString() + fluidStack.getFluid().getName());
         }
         cir.getReturnValue().addAll(TooltipEvents.getTooltips(fluidStack, minecraft.player));

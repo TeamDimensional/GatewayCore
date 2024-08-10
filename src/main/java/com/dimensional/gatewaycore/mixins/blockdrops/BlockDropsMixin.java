@@ -32,7 +32,7 @@ public abstract class BlockDropsMixin {
 
     @Inject(method = "postInit", at = @At("HEAD"), cancellable = true)
     public void onPostInit(FMLPostInitializationEvent event, CallbackInfo ci) throws IOException {
-        if (!GatewayConfig.stopBlockDropsCaching || !recipeWrapFile.exists())
+        if (!GatewayConfig.mods.stopBlockDropsCaching || !recipeWrapFile.exists())
             return;
 
         recipeWrappers = gson.fromJson(

@@ -41,12 +41,12 @@ public class AurorianMaterials {
 
     public static void registerMaterials() {
 
-        if (GatewayConfig.tinkerOverridesNeeded()) {
+        if (GatewayConfig.tConstruct.tinkerOverridesNeeded()) {
             TinkerRegistry.addMaterial(silentwood);
             TinkerRegistry.addMaterial(aurorianStone);
         }
 
-        if (GatewayConfig.createTinkerMats) {
+        if (GatewayConfig.tConstruct.createCustomMaterials) {
             TinkerRegistry.addMaterial(crystal);
         }
     }
