@@ -1,0 +1,10 @@
+{
+  "package": "com.dimensional.gatewaycore.mixins.calculator",
+  "refmap": "mixins.gatewaycore.refmap.json",
+  "target": "@env(DEFAULT)",
+  "minVersion": "0.8",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "TileEntityConductorMastMixin"
+  ]
+}

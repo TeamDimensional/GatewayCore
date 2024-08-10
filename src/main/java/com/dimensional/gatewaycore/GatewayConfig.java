@@ -62,6 +62,9 @@ public class GatewayConfig {
 
         @Config.Comment("How much ESPE should we tax from Wind Rune whenever a recipe with insufficient energy is attempted? 0 disables the mechanic.")
         public int windRuneTax = 10;
+
+        @Config.Comment("Should we rebalance Calculator's Conductor Mast? Currently the exact way of doing so isn't configurable, however.")
+        public boolean rebalanceConductorMast = true;
     }
 
     @Mod.EventBusSubscriber(modid = Tags.MOD_ID)

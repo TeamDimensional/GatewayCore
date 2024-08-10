@@ -15,7 +15,8 @@ public class LateMixin implements ILateMixinLoader {
         "blockdrops",
         "jei",
         "aether_legacy",
-        "essentialcraft"
+        "essentialcraft",
+        "calculator"
     );
 
     @Override
