@@ -59,6 +59,9 @@ public class GatewayConfig {
 
         @Config.Comment("Should we disable Aether's ores from generating? Intended to be used with CoFH World or similar.")
         public boolean disableAetherOres = true;
+
+        @Config.Comment("How much ESPE should we tax from Wind Rune whenever a recipe with insufficient energy is attempted? 0 disables the mechanic.")
+        public int windRuneTax = 10;
     }
 
     @Mod.EventBusSubscriber(modid = Tags.MOD_ID)
