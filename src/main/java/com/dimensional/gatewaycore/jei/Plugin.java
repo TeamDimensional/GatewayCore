@@ -3,7 +3,6 @@ package com.dimensional.gatewaycore.jei;
 import com.dimensional.gatewaycore.GatewayCore;
 import com.dimensional.gatewaycore.jei.cofhworld.CoFHWorldCategory;
 import com.dimensional.gatewaycore.jei.cofhworld.CoFHWorldRegistrar;
-import com.dimensional.gatewaycore.jei.immersive.*;
 import com.dimensional.gatewaycore.jei.roots.FlowerGrowthCategory;
 import com.dimensional.gatewaycore.jei.roots.RootsRegistrar;
 import mezz.jei.api.*;
@@ -16,7 +15,6 @@ import javax.annotation.Nonnull;
 public class Plugin implements IModPlugin {
     public static final String FLOWER_GROWTH = "gateway:flower_growth";
     public static final String COFH_WORLD = "gateway:cofh_world";
-    public static final String IE_MULTIBLOCK = "gateway:ie_multiblock";
 
     @Override
     public void registerCategories(IRecipeCategoryRegistration registry) {
@@ -27,9 +25,6 @@ public class Plugin implements IModPlugin {
         }
         if (Loader.isModLoaded("cofhworld")) {
             registry.addRecipeCategories(new CoFHWorldCategory(helper));
-        }
-        if (Loader.isModLoaded("immersiveengineering")) {
-            registry.addRecipeCategories(new MultiblockRecipeCategory(helper));
         }
     }
 
@@ -45,11 +40,6 @@ public class Plugin implements IModPlugin {
         if (Loader.isModLoaded("cofhworld")) {
             GatewayCore.LOGGER.info("Loading CoFH World recipes...");
             CoFHWorldRegistrar.register(registry);
-        }
-
-        if (Loader.isModLoaded("immersiveengineering")) {
-            GatewayCore.LOGGER.info("Loading Immersive Engineering recipes...");
-            ImmersiveEngineeringRegistrar.register(registry);
         }
 
         GatewayCore.LOGGER.info("JEI integration done");
