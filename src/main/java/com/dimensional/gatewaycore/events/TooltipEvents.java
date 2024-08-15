@@ -23,11 +23,20 @@ public class TooltipEvents {
 
     private static final Map<Integer, String> tierNames = new HashMap<>();
     private static final TooltipStorage<ItemStack> stackStorage = new TooltipStorage<>(
-        stack -> stack.getItem().getRegistryName() + "@" + stack.getMetadata());
+        stack -> stack.getItem().getRegistryName() + "@" + stack.getMetadata(),
+        stack -> stack.getItem().getRegistryName() + "@32767",
+        stack -> stack.getItem().getCreatorModId(stack)
+        );
     private static final TooltipStorage<FluidStack> fluidStorage = new TooltipStorage<>(FluidStack::getUnlocalizedName);
 
     public static void setTier(ItemStack item, int tier) {
         stackStorage.setTier(item, tier);
+    }
+
+    public static void setModTier(String mod, int tier) {
+        stackStorage.setModTier(mod, tier);
+        // Fluid storage doesn't use mod tiers
+        // fluidStorage.setModTier(mod, tier);
     }
 
     public static void setUnlock(ItemStack item, int tier) {

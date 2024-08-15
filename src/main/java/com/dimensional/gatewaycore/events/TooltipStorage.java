@@ -2,6 +2,7 @@ package com.dimensional.gatewaycore.events;
 
 import net.minecraft.util.text.TextFormatting;
 
+import javax.annotation.Nullable;
 import java.util.*;
 
 public class TooltipStorage<T> {
@@ -37,11 +38,20 @@ public class TooltipStorage<T> {
     private final Map<String, String> tooltips = new HashMap<>();
     private final Map<String, PredicateWithText<T>> predicates = new HashMap<>();
     private final Map<String, PredicateWithNumber<T>> tierPredicates = new HashMap<>();
+    private final Map<String, Integer> modTiers = new HashMap<>();
 
     private final TStringifier<T> stringifier;
+    private final @Nullable TStringifier<T> stringifier2;
+    private final @Nullable TStringifier<T> modLookup;
+
+    TooltipStorage(TStringifier<T> stringifier, @Nullable TStringifier<T> stringifier2, @Nullable TStringifier<T> modLookup) {
+        this.stringifier = stringifier;
+        this.stringifier2 = stringifier2;
+        this.modLookup = modLookup;
+    }
 
     TooltipStorage(TStringifier<T> stringifier) {
-        this.stringifier = stringifier;
+        this(stringifier, null, null);
     }
 
     private void setTier(String item, int tier) {
@@ -50,6 +60,10 @@ public class TooltipStorage<T> {
 
     public void setTier(T item, int tier) {
         setTier(stringifier.stringify(item), tier);
+    }
+
+    public void setModTier(String mod, int tier) {
+        modTiers.put(mod, tier);
     }
 
     private void setUnlock(String item, int tier) {
@@ -112,7 +126,16 @@ public class TooltipStorage<T> {
             }
         }
         String key = stringifier.stringify(stack);
-        return tiers.getOrDefault(key, 1);
+        if (tiers.containsKey(key)) return tiers.get(key);
+        if (stringifier2 != null) {
+            key = stringifier2.stringify(stack);
+            if (tiers.containsKey(key)) return tiers.get(key);
+        }
+        if (modLookup != null) {
+            String mod = modLookup.stringify(stack);
+            return modTiers.getOrDefault(mod, 1);
+        }
+        return 1;
     }
 
     public List<String> getTooltips(T stack) {
