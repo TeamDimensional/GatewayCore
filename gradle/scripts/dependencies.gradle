@@ -5,6 +5,7 @@ def debug_tinker = false
 def debug_ec4 = false
 def debug_botania = false
 def debug_groovyscript = false
+def debug_nco = false
 def debug_gamestages = false
 def debug_cofh_world = false
 def debug_block_drops = false
@@ -14,7 +15,7 @@ def debug_aurorian = false
 def debug_natures_aura = false
 def debug_thermal_foundation = false
 def debug_aether = false
-def debug_calculator = true
+def debug_calculator = false
 
 final def mod_dependencies = [
         'jei-238222:5101347': [true],
@@ -39,12 +40,13 @@ final def mod_dependencies = [
         'aether-255308:5035622': [debug_aether],
         'sonarcore-239418:2645156': [debug_calculator],
         'calculator-225104:2847174': [debug_calculator],
+        'nuclearcraft-overhauled-336895:5446445': [debug_nco],
+        'groovyscript-687577:5635093': [debug_groovyscript],
 ]
 
 final def runtime_dependencies = [
         'hwyla-253449:2568751': [true],
         'tinkers-jei-291786:2701203': [debug_tinker],
-        'groovyscript-687577:5439031': [debug_groovyscript],
         'just-enough-petroleum-291727:2549332': [debug_immersive_petroleum],
         'thermal-foundation-222880:2926428': [debug_thermal_foundation],
         'redstone-flux-270789:2920436': [debug_thermal_foundation],
