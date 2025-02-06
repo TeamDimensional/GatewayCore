@@ -65,6 +65,9 @@ public class GatewayConfig {
 
         @Config.Comment("Should we rebalance Calculator's Conductor Mast? Currently the exact way of doing so isn't configurable, however.")
         public boolean rebalanceConductorMast = true;
+
+        @Config.Comment("Registry name of the fluid used by Magmatic Smeltery. Lava is the default.")
+        public String magmaticSmelteryFluid = "lava";
     }
 
     @Mod.EventBusSubscriber(modid = Tags.MOD_ID)
