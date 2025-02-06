@@ -1,6 +1,7 @@
 container.gateway.flower_growth.name=Flower Growth Ritual
 container.gateway.cofh_world.name=World Generation
-container.gateway.ie_multiblock.name=Multiblock Construction
+container.gateway.magmatic_furnace.name=Magmatic Smelting
+container.gateway.magmatic_smeltery.name=Advanced Magmatic Smelting
 
 material.gateway_flint.name=Flint
 material.gateway_wood.name=Wood
