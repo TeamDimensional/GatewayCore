@@ -16,6 +16,7 @@ def debug_natures_aura = false
 def debug_thermal_foundation = false
 def debug_aether = false
 def debug_calculator = false
+def run_tool_progression = false
 
 final def mod_dependencies = [
         'jei-238222:5101347': [true],
@@ -50,7 +51,8 @@ final def runtime_dependencies = [
         'just-enough-petroleum-291727:2549332': [debug_immersive_petroleum],
         'thermal-foundation-222880:2926428': [debug_thermal_foundation],
         'redstone-flux-270789:2920436': [debug_thermal_foundation],
-        'cofh-core-69162:2920433': [debug_thermal_foundation]
+        'cofh-core-69162:2920433': [debug_thermal_foundation],
+        'tool-progression-266550:3270468': [run_tool_progression],
 ]
 
 repositories {
