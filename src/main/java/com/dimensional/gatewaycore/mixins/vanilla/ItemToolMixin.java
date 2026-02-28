@@ -8,9 +8,9 @@ import com.dimensional.gatewaycore.utils.ItemToolModifier;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemTool;
 
-@Mixin(value = ItemTool.class, remap = false)
+@Mixin(value = ItemTool.class, remap = true)
 public abstract class ItemToolMixin extends Item implements ItemToolModifier {
-    @Shadow
+    @Shadow(remap = false)
     private String toolClass;
 
     @Override
