@@ -110,6 +110,11 @@ public class JEIRecipeRenderer {
                 }
             }
         }
+        // This is just stupid.
+        GlStateManager.pushMatrix();
+        GlStateManager.translate(0, yOffset, 0);
+        recipe.category.drawExtras(page.mc);
+        GlStateManager.popMatrix();
         GlStateManager.popAttrib();
     }
 }
