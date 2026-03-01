@@ -8,15 +8,20 @@ import org.apache.logging.log4j.Logger;
 import org.spongepowered.include.com.google.common.collect.ImmutableList;
 
 import com.dimensional.gatewaycore.events.TinkerEvents;
+import com.dimensional.gatewaycore.patchouli.PageJEI;
+import com.dimensional.gatewaycore.render.ShaderManager;
 import com.dimensional.gatewaycore.tinker.MaterialRegistry;
 
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLConstructionEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
+import net.minecraftforge.fml.relauncher.Side;
+import vazkii.patchouli.client.book.ClientBookRegistry;
 import zone.rong.mixinbooter.IEarlyMixinLoader;
 
 @Mod(modid = Tags.MOD_ID, name = Tags.MOD_NAME, version = Tags.VERSION, dependencies = "before:jei;after:cofhworld")
@@ -39,6 +44,10 @@ public class GatewayCore implements IFMLLoadingPlugin, IEarlyMixinLoader {
             MaterialRegistry.setup();
             MaterialRegistry.registerMaterials();
         }
+
+        if (Loader.isModLoaded("patchouli")) {
+            ClientBookRegistry.INSTANCE.pageTypes.put("jei", PageJEI.class);
+        }
     }
 
     @Mod.EventHandler
@@ -47,6 +56,10 @@ public class GatewayCore implements IFMLLoadingPlugin, IEarlyMixinLoader {
                 || GatewayConfig.tConstruct.createCustomMaterials)) {
             LOGGER.info("Post-initializing TiC...");
             MaterialRegistry.postInit();
+        }
+
+        if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {
+            ShaderManager.loadShaders();
         }
     }
 

@@ -13,16 +13,17 @@ def debug_immersive_engineering = false
 def debug_immersive_petroleum = false
 def debug_aurorian = false
 def debug_natures_aura = false
-def debug_thermal_foundation = true
+def debug_thermal_foundation = false
 def debug_aether = false
 def debug_calculator = false
 def run_tool_progression = false
+def debug_patchouli = false
 
 final def mod_dependencies = [
         'jei-238222:5101347': [true],
         'mystical_lib-277064:3483816': [debug_roots],
         'mystical_world-282940:3460961': [debug_roots],
-        'patchouli-306770:3162874': [debug_roots, debug_natures_aura],
+        'patchouli-306770:3162874': [debug_roots, debug_natures_aura, debug_patchouli],
         'roots-246183:3905074': [debug_roots],
         'mantle-74924:2713386': [debug_tinker],
         'tinkers-construct-74072:2902483': [debug_tinker],
