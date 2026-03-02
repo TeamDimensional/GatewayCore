@@ -9,6 +9,7 @@ import org.spongepowered.include.com.google.common.collect.ImmutableList;
 
 import com.dimensional.gatewaycore.events.TinkerEvents;
 import com.dimensional.gatewaycore.patchouli.PageJEI;
+import com.dimensional.gatewaycore.patchouli.PageMultiItem;
 import com.dimensional.gatewaycore.render.ShaderManager;
 import com.dimensional.gatewaycore.tinker.MaterialRegistry;
 
@@ -47,6 +48,7 @@ public class GatewayCore implements IFMLLoadingPlugin, IEarlyMixinLoader {
 
         if (Loader.isModLoaded("patchouli")) {
             ClientBookRegistry.INSTANCE.pageTypes.put("jei", PageJEI.class);
+            ClientBookRegistry.INSTANCE.pageTypes.put("items", PageMultiItem.class);
         }
     }
 

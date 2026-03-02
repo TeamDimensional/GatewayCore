@@ -9,8 +9,8 @@ import org.lwjgl.opengl.GL11;
 import com.dimensional.gatewaycore.jei.Plugin;
 import com.dimensional.gatewaycore.jei.Plugin.RecipeWithWrapper;
 import com.dimensional.gatewaycore.jei.RecipeLookupCriteria;
-import com.dimensional.gatewaycore.jei.RecipeLookupCriteriaBuilder;
 import com.dimensional.gatewaycore.render.ShaderManager;
+import com.dimensional.gatewaycore.utils.GenericIngredient;
 import com.dimensional.gatewaycore.utils.IngredientRendererGetter;
 
 import mezz.jei.api.gui.ITooltipCallback;
@@ -29,8 +29,8 @@ import vazkii.patchouli.client.book.gui.GuiBook;
 
 public class JEIRecipeRenderer {
     private String category;
-    private List<String> inputs = new ArrayList<>();
-    private List<String> outputs = new ArrayList<>();
+    private List<GenericIngredient<?>> inputs = new ArrayList<>();
+    private List<GenericIngredient<?>> outputs = new ArrayList<>();
     private boolean removeBackground = true;
 
     transient private RecipeWithWrapper<?> recipe;
@@ -46,12 +46,11 @@ public class JEIRecipeRenderer {
     @SuppressWarnings("unchecked")
     public void load() {
         if (recipe == null) {
-            RecipeLookupCriteriaBuilder rlcb = new RecipeLookupCriteriaBuilder(category);
-            for (String in : inputs)
-                rlcb.addInput(in);
-            for (String out : outputs)
-                rlcb.addOutput(out);
-            RecipeLookupCriteria rlc = rlcb.build();
+            RecipeLookupCriteria rlc = new RecipeLookupCriteria(category);
+            for (GenericIngredient<?> in : inputs)
+                rlc.addInput(in);
+            for (GenericIngredient<?> out : outputs)
+                rlc.addOutput(out);
             List<RecipeWithWrapper<?>> recipesFound = Plugin.filterRecipes(rlc);
             recipeCount = recipesFound.size();
 

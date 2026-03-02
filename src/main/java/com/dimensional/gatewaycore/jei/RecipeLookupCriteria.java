@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.dimensional.gatewaycore.utils.GenericIngredient;
+
 import mezz.jei.api.ingredients.IIngredientHelper;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IIngredientType;
@@ -32,15 +34,15 @@ public class RecipeLookupCriteria {
         return null;
     }
 
-    public <T> RecipeLookupCriteria addInput(IIngredientType<T> ingType, T input) {
-        List<Object> inputs = requiredInputs.computeIfAbsent(ingType, k -> new ArrayList<>());
-        inputs.add(input);
+    public <T> RecipeLookupCriteria addInput(GenericIngredient<?> ingredient) {
+        List<Object> inputs = requiredInputs.computeIfAbsent(ingredient.type(), k -> new ArrayList<>());
+        inputs.add(ingredient.ingredient());
         return this;
     }
 
-    public <T> RecipeLookupCriteria addOutput(IIngredientType<T> ingType, T output) {
-        List<Object> outputs = requiredOutputs.computeIfAbsent(ingType, k -> new ArrayList<>());
-        outputs.add(output);
+    public <T> RecipeLookupCriteria addOutput(GenericIngredient<?> ingredient) {
+        List<Object> outputs = requiredOutputs.computeIfAbsent(ingredient.type(), k -> new ArrayList<>());
+        outputs.add(ingredient.ingredient());
         return this;
     }
 
