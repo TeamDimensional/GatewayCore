@@ -64,10 +64,17 @@ public class Plugin implements IModPlugin {
         for (IRecipeWrapper wrapper : getRecipeRegistry().getRecipeWrappers(cat)) {
             IIngredients ingredients = new Ingredients();
             wrapper.getIngredients(ingredients);
-            if (rlc.matches(ingredients)) {
-                @SuppressWarnings("unchecked")
-                RecipeWithWrapper<?> pair = new RecipeWithWrapper<>((IRecipeCategory<IRecipeWrapper>) cat, wrapper);
-                recipes.add(pair);
+            try {
+                if (rlc.matches(ingredients)) {
+                    @SuppressWarnings("unchecked")
+                    RecipeWithWrapper<?> pair = new RecipeWithWrapper<>((IRecipeCategory<IRecipeWrapper>) cat, wrapper);
+                    recipes.add(pair);
+                }
+            } catch (NullPointerException e) {
+                GatewayCore.LOGGER.error(
+                        "While evaluating a recipe in '{}', got an NPE. This is a bug in the mod adding that category, not in JEI or Patchouli.",
+                        rlc.getCategory());
+                e.printStackTrace();
             }
         }
         return recipes;

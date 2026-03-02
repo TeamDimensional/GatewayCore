@@ -31,11 +31,17 @@ public class JEIRecipeRenderer {
     private String category;
     private List<String> inputs = new ArrayList<>();
     private List<String> outputs = new ArrayList<>();
+    private boolean removeBackground = true;
 
     transient private RecipeWithWrapper<?> recipe;
     transient private SimpleRecipeLayout layout;
     transient private int recipeCount;
     transient private int yOffset;
+    transient private float scale;
+    transient private int recipeWidth;
+    transient private int recipeHeight;
+
+    private static final int SCREEN_WIDTH = 120;
 
     @SuppressWarnings("unchecked")
     public void load() {
@@ -55,6 +61,9 @@ public class JEIRecipeRenderer {
                 IIngredients ingredients = new Ingredients();
                 recipe.wrapper.getIngredients(ingredients);
                 ((IRecipeCategory<IRecipeWrapper>) recipe.category).setRecipe(layout, recipe.wrapper, ingredients);
+                scale = toThreshold(((float) SCREEN_WIDTH) / recipe.category.getBackground().getWidth());
+                recipeWidth = recipe.category.getBackground().getWidth();
+                recipeHeight = recipe.category.getBackground().getHeight();
             }
         }
     }
@@ -65,6 +74,15 @@ public class JEIRecipeRenderer {
 
     public void setYOffset(int yOffset) {
         this.yOffset = yOffset;
+    }
+
+    private static float toThreshold(float x) {
+        if (x >= 1)
+            return 1;
+        int eights = (int) (x * 8);
+        if (eights < 3)
+            return x;
+        return (float) eights / 8;
     }
 
     @SuppressWarnings("unchecked")
@@ -78,10 +96,27 @@ public class JEIRecipeRenderer {
             return;
         }
 
+        boolean blend = GL11.glGetBoolean(GL11.GL_BLEND);
+
         GlStateManager.pushAttrib();
-        ShaderManager.renderWith(ShaderManager.noJeiBackgroundColor, () -> {
-            recipe.category.getBackground().draw(page.mc, 0, yOffset);
-        });
+        GlStateManager.pushMatrix();
+        GlStateManager.translate(0, yOffset, 0);
+        GlStateManager.scale(scale, scale, scale);
+        Runnable drawBg = () -> {
+            recipe.category.getBackground().draw(page.mc, 0, 0);
+        };
+        if (removeBackground) {
+            ShaderManager.renderWith(ShaderManager.noJeiBackgroundColor, drawBg);
+        } else {
+            drawBg.run();
+        }
+
+        int actualMouseX = (int) (mouseX / scale),
+                actualMouseY = (int) (mouseY / scale),
+                actualLeft = (int) (page.parent.bookLeft / scale),
+                actualTop = (int) ((yOffset + page.parent.bookTop) / scale),
+                recipeMouseY = actualMouseY - actualTop,
+                recipeMouseX = actualMouseX - actualLeft;
         for (GuiIngredientGroup<?> group : layout.getGroups()) {
             for (Map.Entry<Integer, ?> ingPair : group.getGuiIngredients().entrySet()) {
                 // JEI messes up Blend and Depth states while rendering items, which make
@@ -90,12 +125,10 @@ public class JEIRecipeRenderer {
                 GuiIngredient<Object> ing = (GuiIngredient<Object>) ingPair.getValue();
                 int slotNum = ingPair.getKey();
 
-                boolean blend = GL11.glGetBoolean(GL11.GL_BLEND);
-                ing.draw(page.mc, 0, yOffset);
-                if (blend)
-                    GlStateManager.enableBlend();
+                GlStateManager.enableBlend();
+                ing.draw(page.mc, 0, 0);
 
-                if (ing.isMouseOver(page.parent.bookLeft, yOffset + page.parent.bookTop, mouseX, mouseY)) {
+                if (ing.isMouseOver(actualLeft, actualTop, actualMouseX, actualMouseY)) {
                     IngredientRendererGetter<Object> helper = (IngredientRendererGetter<Object>) ing;
                     Object stack = ing.getDisplayedIngredient();
                     ITooltipFlag.TooltipFlags tooltipFlag = page.mc.gameSettings.advancedItemTooltips
@@ -106,15 +139,21 @@ public class JEIRecipeRenderer {
                     if (tooltipCallback != null) {
                         tooltipCallback.onTooltip(slotNum, ing.isInput(), stack, tooltip);
                     }
+                    tooltip.addAll(recipe.wrapper.getTooltipStrings(recipeMouseX, recipeMouseY));
+                    tooltip.addAll(recipe.category.getTooltipStrings(recipeMouseX, recipeMouseY));
                     page.parent.setTooltip(tooltip);
                 }
             }
         }
-        // This is just stupid.
-        GlStateManager.pushMatrix();
-        GlStateManager.translate(0, yOffset, 0);
+
+        recipe.wrapper.drawInfo(page.mc, recipeWidth, recipeHeight, mouseX, mouseY);
+        GlStateManager.color(1, 1, 1, 1);
+
         recipe.category.drawExtras(page.mc);
         GlStateManager.popMatrix();
         GlStateManager.popAttrib();
+
+        if (blend)
+            GlStateManager.enableBlend();
     }
 }

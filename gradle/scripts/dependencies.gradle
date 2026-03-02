@@ -16,8 +16,11 @@ def debug_natures_aura = false
 def debug_thermal_foundation = false
 def debug_aether = false
 def debug_calculator = false
-def run_tool_progression = false
 def debug_patchouli = false
+
+def run_tool_progression = false
+def run_abyssalcraft = false
+def run_factorytech = false
 
 final def mod_dependencies = [
         'jei-238222:5101347': [true],
@@ -54,6 +57,8 @@ final def runtime_dependencies = [
         'redstone-flux-270789:2920436': [debug_thermal_foundation],
         'cofh-core-69162:2920433': [debug_thermal_foundation],
         'tool-progression-266550:3270468': [run_tool_progression],
+        'abyssalcraft-53686:7384999': [run_abyssalcraft],
+        'factory-tech-278822:3845293': [run_factorytech],
 ]
 
 repositories {
