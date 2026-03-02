@@ -139,8 +139,15 @@ public class JEIRecipeRenderer {
                     if (tooltipCallback != null) {
                         tooltipCallback.onTooltip(slotNum, ing.isInput(), stack, tooltip);
                     }
-                    tooltip.addAll(recipe.wrapper.getTooltipStrings(recipeMouseX, recipeMouseY));
-                    tooltip.addAll(recipe.category.getTooltipStrings(recipeMouseX, recipeMouseY));
+                    // NOTE: JEI's API requires that tooltip lists are non-null.
+                    // However, Thaumic JEI violates this principle! So we need to clean up their
+                    // mess.
+                    List<String> tooltips = recipe.wrapper.getTooltipStrings(recipeMouseX, recipeMouseY);
+                    if (tooltips != null)
+                        tooltip.addAll(tooltips);
+                    tooltips = recipe.category.getTooltipStrings(recipeMouseX, recipeMouseY);
+                    if (tooltips != null)
+                        tooltip.addAll(tooltips);
                     page.parent.setTooltip(tooltip);
                 }
             }
