@@ -69,7 +69,7 @@ public class IngredientDeserializer implements JsonDeserializer<GenericIngredien
     }
 
     private String safeGetString(JsonObject o, String name) throws DeserializeFailure {
-        JsonElement type = o.get("type");
+        JsonElement type = o.get(name);
         if (type == null || !type.isJsonPrimitive()) {
             GatewayCore.LOGGER.warn(name + " should be a primitive, got {}", type);
             return null;
@@ -83,7 +83,7 @@ public class IngredientDeserializer implements JsonDeserializer<GenericIngredien
     }
 
     private int getIntOr(JsonObject o, String name, int def) {
-        JsonElement type = o.get("type");
+        JsonElement type = o.get(name);
         if (type == null || !type.isJsonPrimitive()) {
             return def;
         }
