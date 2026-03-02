@@ -156,7 +156,9 @@ public class JEIRecipeRenderer {
         recipe.wrapper.drawInfo(page.mc, recipeWidth, recipeHeight, mouseX, mouseY);
         GlStateManager.color(1, 1, 1, 1);
 
+        GlStateManager.enableAlpha();
         recipe.category.drawExtras(page.mc);
+        GlStateManager.disableAlpha();
         GlStateManager.popMatrix();
         GlStateManager.popAttrib();
 

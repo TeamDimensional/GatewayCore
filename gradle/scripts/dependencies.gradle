@@ -21,6 +21,7 @@ def debug_patchouli = false
 def run_tool_progression = false
 def run_abyssalcraft = false
 def run_factorytech = false
+def run_thaumic_jei = false
 
 final def mod_dependencies = [
         'jei-238222:5101347': [true],
@@ -32,7 +33,7 @@ final def mod_dependencies = [
         'tinkers-construct-74072:2902483': [debug_tinker],
         'essentialcraft-4-unofficial-254817:5416404': [debug_ec4],
         'dummycore-unofficial-266491:2611426': [debug_ec4],
-        'baubles-227083:2518667': [debug_ec4, debug_botania],
+        'baubles-227083:2518667': [debug_ec4, debug_botania, run_thaumic_jei],
         'botania-225643:3330934': [debug_botania],
         'gamestages-268655:2951840': [debug_gamestages],
         'bookshelf-228525:2836960': [debug_gamestages],
@@ -59,6 +60,8 @@ final def runtime_dependencies = [
         'tool-progression-266550:3270468': [run_tool_progression],
         'abyssalcraft-53686:7384999': [run_abyssalcraft],
         'factory-tech-278822:3845293': [run_factorytech],
+        'thaumic-jei-285492:5646810': [run_thaumic_jei],
+        'thaumcraft-223628:2629023': [run_thaumic_jei],
 ]
 
 repositories {
