@@ -113,9 +113,11 @@ public class IngredientDeserializer implements JsonDeserializer<GenericIngredien
                 } catch (NBTException e) {
                     GatewayCore.LOGGER.warn("Unable to parse NBT tag '{}'", nbtContent);
                     return null;
-                } catch (DeserializeFailure e) {
+                } catch (DeserializeFailure e) { // no NBT provided.
                 }
-                return new GenericIngredient<>(VanillaTypes.ITEM, new ItemStack(item, quantity, meta, nbt));
+                ItemStack s = new ItemStack(item, quantity, meta);
+                s.setTagCompound(nbt);
+                return new GenericIngredient<>(VanillaTypes.ITEM, s);
             case "fluid":
                 String fluidName = safeGetString(input, "fluid");
                 Fluid fluid = FluidRegistry.getFluid(fluidName);

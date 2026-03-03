@@ -10,12 +10,10 @@ import mezz.jei.api.ingredients.IIngredientRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.client.util.ITooltipFlag.TooltipFlags;
-import vazkii.patchouli.client.book.gui.GuiBook;
-import vazkii.patchouli.client.book.page.abstr.PageWithText;
+import vazkii.patchouli.client.book.page.PageText;
 
-public class PageMultiItem extends PageWithText {
+public class PageMultiItem extends PageText {
 
-    private String title = "";
     private List<GenericIngredient<?>> items = new ArrayList<>();
 
     public static final int ITEMS_PER_ROW = 6;
@@ -26,11 +24,8 @@ public class PageMultiItem extends PageWithText {
     public void render(int mouseX, int mouseY, float pticks) {
         super.render(mouseX, mouseY, pticks);
         GlStateManager.color(1, 1, 1, 1);
-        if (!title.isEmpty()) {
-            parent.drawCenteredStringNoShadow(title, GuiBook.PAGE_WIDTH / 2, 0, book.headerColor);
-        }
 
-        int baseOffset = title.isEmpty() ? 0 : 16;
+        int baseOffset = super.getTextHeight();
         for (int i = 0; i < items.size(); i += ITEMS_PER_ROW) {
             int rowSize = Math.min(ITEMS_PER_ROW, items.size() - i);
             for (int j = 0; j < rowSize && j < ITEMS_PER_ROW; j++) {
@@ -55,7 +50,7 @@ public class PageMultiItem extends PageWithText {
 
     @Override
     public int getTextHeight() {
-        return getBaseOffset() + (title.isEmpty() ? 0 : 16);
+        return getBaseOffset() + super.getTextHeight();
     }
 
     private int getBaseOffset() {
