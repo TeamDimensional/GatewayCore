@@ -10,7 +10,7 @@ import org.spongepowered.include.com.google.common.collect.ImmutableList;
 import com.dimensional.gatewaycore.events.TinkerEvents;
 import com.dimensional.gatewaycore.patchouli.PageJEI;
 import com.dimensional.gatewaycore.patchouli.PageMultiItem;
-import com.dimensional.gatewaycore.render.ShaderManager;
+import com.dimensional.gatewaycore.render.RenderManager;
 import com.dimensional.gatewaycore.tinker.MaterialRegistry;
 
 import net.minecraftforge.common.MinecraftForge;
@@ -61,7 +61,7 @@ public class GatewayCore implements IFMLLoadingPlugin, IEarlyMixinLoader {
         }
 
         if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {
-            ShaderManager.loadShaders();
+            RenderManager.loadShaders();
         }
     }
 

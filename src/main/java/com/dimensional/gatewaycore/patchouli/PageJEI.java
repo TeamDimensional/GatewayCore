@@ -2,6 +2,8 @@ package com.dimensional.gatewaycore.patchouli;
 
 import java.util.List;
 
+import com.dimensional.gatewaycore.render.RenderManager;
+
 import net.minecraft.client.renderer.GlStateManager;
 import vazkii.patchouli.client.book.gui.GuiBook;
 import vazkii.patchouli.client.book.gui.GuiBookEntry;
@@ -35,7 +37,10 @@ public class PageJEI extends PageWithText {
         }
 
         for (JEIRecipeRenderer r : recipes) {
-            r.render(this, mouseX, mouseY);
+
+            RenderManager.renderWithRevertState(() -> {
+                r.render(this, mouseX, mouseY);
+            });
         }
     }
 

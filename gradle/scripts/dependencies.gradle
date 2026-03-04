@@ -17,11 +17,13 @@ def debug_thermal_foundation = false
 def debug_aether = false
 def debug_calculator = false
 def debug_patchouli = false
+def debug_relauncher = false
 
 def run_tool_progression = false
 def run_abyssalcraft = false
 def run_factorytech = false
 def run_thaumic_jei = false
+def run_astral_sorcery = false
 
 final def mod_dependencies = [
         'jei-238222:5101347': [true],
@@ -33,7 +35,7 @@ final def mod_dependencies = [
         'tinkers-construct-74072:2902483': [debug_tinker],
         'essentialcraft-4-unofficial-254817:5416404': [debug_ec4],
         'dummycore-unofficial-266491:2611426': [debug_ec4],
-        'baubles-227083:2518667': [debug_ec4, debug_botania, run_thaumic_jei],
+        'baubles-227083:2518667': [debug_ec4, debug_botania, run_thaumic_jei, run_astral_sorcery],
         'botania-225643:3330934': [debug_botania],
         'gamestages-268655:2951840': [debug_gamestages],
         'bookshelf-228525:2836960': [debug_gamestages],
@@ -48,6 +50,7 @@ final def mod_dependencies = [
         'calculator-225104:2847174': [debug_calculator],
         'nuclearcraft-overhauled-336895:5446445': [debug_nco],
         'groovyscript-687577:5635093': [debug_groovyscript],
+        'improved-cleanroom-relauncher-1336201:7127770': [debug_relauncher],
 ]
 
 final def runtime_dependencies = [
@@ -62,6 +65,7 @@ final def runtime_dependencies = [
         'factory-tech-278822:3845293': [run_factorytech],
         'thaumic-jei-285492:5646810': [run_thaumic_jei],
         'thaumcraft-223628:2629023': [run_thaumic_jei],
+        'astral-sorcery-241721:3044416': [run_astral_sorcery],
 ]
 
 repositories {

@@ -14,7 +14,7 @@ import com.dimensional.gatewaycore.GatewayCore;
 
 import net.minecraft.client.renderer.GlStateManager;
 
-public class ShaderManager {
+public class RenderManager {
 
     private static final int VERT = ARBVertexShader.GL_VERTEX_SHADER_ARB;
     private static final int FRAG = ARBFragmentShader.GL_FRAGMENT_SHADER_ARB;
@@ -25,7 +25,7 @@ public class ShaderManager {
         noJeiBackgroundColor = createProgram(null, "/assets/gatewaycore/shaders/no_jei_background_color.frag");
     }
 
-    public static void renderWith(int shader, Runnable f) {
+    public static void renderWithShader(int shader, Runnable f) {
         boolean lighting = GL11.glGetBoolean(GL11.GL_LIGHTING);
         GlStateManager.disableLighting();
         ARBShaderObjects.glUseProgramObjectARB(shader);
@@ -33,6 +33,25 @@ public class ShaderManager {
         ARBShaderObjects.glUseProgramObjectARB(0);
         if (lighting)
             GlStateManager.enableLighting();
+    }
+
+    public static void renderWithRevertState(Runnable f) {
+        boolean lighting = GL11.glGetBoolean(GL11.GL_LIGHTING),
+                blend = GL11.glGetBoolean(GL11.GL_BLEND);
+        f.run();
+
+        // :pepeHanging:
+        if (lighting) {
+            GlStateManager.enableLighting();
+        } else {
+            GlStateManager.disableLighting();
+        }
+
+        if (blend) {
+            GlStateManager.enableBlend();
+        } else {
+            GlStateManager.disableBlend();
+        }
     }
 
     // Code copied from Botania, which was itself copied from LWJGL Wiki
@@ -99,7 +118,7 @@ public class ShaderManager {
     }
 
     private static String readFileAsString(String filename) throws Exception {
-        InputStream in = ShaderManager.class.getResourceAsStream(filename);
+        InputStream in = RenderManager.class.getResourceAsStream(filename);
 
         if (in == null)
             return "";

@@ -4,12 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.lwjgl.opengl.GL11;
-
 import com.dimensional.gatewaycore.jei.Plugin;
 import com.dimensional.gatewaycore.jei.Plugin.RecipeWithWrapper;
 import com.dimensional.gatewaycore.jei.RecipeLookupCriteria;
-import com.dimensional.gatewaycore.render.ShaderManager;
+import com.dimensional.gatewaycore.render.RenderManager;
 import com.dimensional.gatewaycore.utils.GenericIngredient;
 import com.dimensional.gatewaycore.utils.IngredientRendererGetter;
 
@@ -28,7 +26,7 @@ import vazkii.patchouli.client.book.gui.BookTextRenderer;
 import vazkii.patchouli.client.book.gui.GuiBook;
 
 public class JEIRecipeRenderer {
-    private String category;
+    private String category = "";
     private List<GenericIngredient<?>> inputs = new ArrayList<>();
     private List<GenericIngredient<?>> outputs = new ArrayList<>();
     private boolean removeBackground = true;
@@ -84,6 +82,14 @@ public class JEIRecipeRenderer {
         return (float) eights / 8;
     }
 
+    private void drawWithRemoveBackground(Runnable f) {
+        if (removeBackground) {
+            RenderManager.renderWithShader(RenderManager.noJeiBackgroundColor, f);
+        } else {
+            f.run();
+        }
+    }
+
     @SuppressWarnings("unchecked")
     public void render(BookPage page, int mouseX, int mouseY) {
         if (recipe == null) {
@@ -95,20 +101,13 @@ public class JEIRecipeRenderer {
             return;
         }
 
-        boolean blend = GL11.glGetBoolean(GL11.GL_BLEND);
-
         GlStateManager.pushAttrib();
         GlStateManager.pushMatrix();
         GlStateManager.translate(0, yOffset, 0);
         GlStateManager.scale(scale, scale, scale);
-        Runnable drawBg = () -> {
+        drawWithRemoveBackground(() -> {
             recipe.category.getBackground().draw(page.mc, 0, 0);
-        };
-        if (removeBackground) {
-            ShaderManager.renderWith(ShaderManager.noJeiBackgroundColor, drawBg);
-        } else {
-            drawBg.run();
-        }
+        });
 
         int actualMouseX = (int) (mouseX / scale),
                 actualMouseY = (int) (mouseY / scale),
@@ -156,12 +155,11 @@ public class JEIRecipeRenderer {
         GlStateManager.color(1, 1, 1, 1);
 
         GlStateManager.enableAlpha();
-        recipe.category.drawExtras(page.mc);
-        GlStateManager.disableAlpha();
+
+        drawWithRemoveBackground(() -> {
+            recipe.category.drawExtras(page.mc);
+        });
         GlStateManager.popMatrix();
         GlStateManager.popAttrib();
-
-        if (blend)
-            GlStateManager.enableBlend();
     }
 }

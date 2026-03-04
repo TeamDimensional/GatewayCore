@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.dimensional.gatewaycore.jei.Plugin;
+import com.dimensional.gatewaycore.render.RenderManager;
 import com.dimensional.gatewaycore.utils.GenericIngredient;
 
 import mezz.jei.api.ingredients.IIngredientRenderer;
@@ -25,27 +26,30 @@ public class PageMultiItem extends PageText {
         super.render(mouseX, mouseY, pticks);
         GlStateManager.color(1, 1, 1, 1);
 
-        int baseOffset = super.getTextHeight();
-        for (int i = 0; i < items.size(); i += ITEMS_PER_ROW) {
-            int rowSize = Math.min(ITEMS_PER_ROW, items.size() - i);
-            for (int j = 0; j < rowSize && j < ITEMS_PER_ROW; j++) {
-                int x = j * ITEM_WIDTH + (PAGE_WIDTH - rowSize * ITEM_WIDTH) / 2,
-                        y = baseOffset + i / ITEMS_PER_ROW * ITEM_WIDTH;
+        RenderManager.renderWithRevertState(() -> {
 
-                @SuppressWarnings("unchecked")
-                GenericIngredient<Object> item = (GenericIngredient<Object>) items.get(i + j);
-                IIngredientRenderer<Object> renderer = Plugin.getIngredientRegistry()
-                        .getIngredientRenderer(item.type());
-                renderer.render(mc, x, y, item.ingredient());
+            int baseOffset = super.getTextHeight();
+            for (int i = 0; i < items.size(); i += ITEMS_PER_ROW) {
+                int rowSize = Math.min(ITEMS_PER_ROW, items.size() - i);
+                for (int j = 0; j < rowSize && j < ITEMS_PER_ROW; j++) {
+                    int x = j * ITEM_WIDTH + (PAGE_WIDTH - rowSize * ITEM_WIDTH) / 2,
+                            y = baseOffset + i / ITEMS_PER_ROW * ITEM_WIDTH;
 
-                if (parent.isAreaHovered(mouseX, mouseY, x, y, ITEM_WIDTH, ITEM_WIDTH)) {
-                    ITooltipFlag.TooltipFlags tooltipFlag = mc.gameSettings.advancedItemTooltips
-                            ? TooltipFlags.ADVANCED
-                            : TooltipFlags.NORMAL;
-                    parent.setTooltip(renderer.getTooltip(mc, item.ingredient(), tooltipFlag));
+                    @SuppressWarnings("unchecked")
+                    GenericIngredient<Object> item = (GenericIngredient<Object>) items.get(i + j);
+                    IIngredientRenderer<Object> renderer = Plugin.getIngredientRegistry()
+                            .getIngredientRenderer(item.type());
+                    renderer.render(mc, x, y, item.ingredient());
+
+                    if (parent.isAreaHovered(mouseX, mouseY, x, y, ITEM_WIDTH, ITEM_WIDTH)) {
+                        ITooltipFlag.TooltipFlags tooltipFlag = mc.gameSettings.advancedItemTooltips
+                                ? TooltipFlags.ADVANCED
+                                : TooltipFlags.NORMAL;
+                        parent.setTooltip(renderer.getTooltip(mc, item.ingredient(), tooltipFlag));
+                    }
                 }
             }
-        }
+        });
     }
 
     @Override
