@@ -18,6 +18,7 @@ def debug_aether = false
 def debug_calculator = false
 def debug_patchouli = false
 def debug_relauncher = false
+def debug_soot = false
 
 def run_tool_progression = false
 def run_abyssalcraft = false
@@ -51,6 +52,8 @@ final def mod_dependencies = [
         'nuclearcraft-overhauled-336895:5446445': [debug_nco],
         'groovyscript-687577:5635093': [debug_groovyscript],
         'improved-cleanroom-relauncher-1336201:7127770': [debug_relauncher],
+        'soot-extended-life-982730:6079170': [debug_soot],
+        'embers-extended-life-936489:7021772': [debug_soot],
 ]
 
 final def runtime_dependencies = [
