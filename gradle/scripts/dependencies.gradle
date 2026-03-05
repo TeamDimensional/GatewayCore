@@ -19,6 +19,7 @@ def debug_calculator = false
 def debug_patchouli = false
 def debug_relauncher = false
 def debug_soot = false
+def debug_chisel = false
 
 def run_tool_progression = false
 def run_abyssalcraft = false
@@ -54,6 +55,8 @@ final def mod_dependencies = [
         'improved-cleanroom-relauncher-1336201:7127770': [debug_relauncher],
         'soot-extended-life-982730:6079170': [debug_soot],
         'embers-extended-life-936489:7021772': [debug_soot],
+        'chisel-235279:2915375': [debug_chisel],
+        'ctm-267602:2915363': [debug_chisel],
 ]
 
 final def runtime_dependencies = [

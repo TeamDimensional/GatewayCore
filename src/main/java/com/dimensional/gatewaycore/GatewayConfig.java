@@ -68,6 +68,9 @@ public class GatewayConfig {
 
         @Config.Comment("Registry name of the fluid used by Magmatic Smeltery. Lava is the default.")
         public String magmaticSmelteryFluid = "lava";
+
+        @Config.Comment("Should we disable special properties for Chisel blocks? Intended to be used if Chisel blocks are cheap.")
+        public boolean noSpecialChiselProperties = true;
     }
 
     @Mod.EventBusSubscriber(modid = Tags.MOD_ID)

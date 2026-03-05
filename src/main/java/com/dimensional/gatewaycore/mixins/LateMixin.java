@@ -18,7 +18,8 @@ public class LateMixin implements ILateMixinLoader {
             "aether_legacy",
             "essentialcraft",
             "calculator",
-            "soot");
+            "soot",
+            "chisel");
 
     @Override
     public List<String> getMixinConfigs() {
