@@ -20,6 +20,7 @@ def debug_patchouli = false
 def debug_relauncher = false
 def debug_soot = false
 def debug_chisel = false
+def debug_xu2 = false
 
 def run_tool_progression = false
 def run_abyssalcraft = false
@@ -57,6 +58,7 @@ final def mod_dependencies = [
         'embers-extended-life-936489:7021772': [debug_soot],
         'chisel-235279:2915375': [debug_chisel],
         'ctm-267602:2915363': [debug_chisel],
+        'extra-utilities-225561:2678374': [debug_xu2],
 ]
 
 final def runtime_dependencies = [
