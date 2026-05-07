@@ -21,6 +21,7 @@ def debug_relauncher = false
 def debug_soot = false
 def debug_chisel = false
 def debug_xu2 = false
+def debug_witchery = false
 
 def run_tool_progression = false
 def run_abyssalcraft = false
@@ -28,8 +29,21 @@ def run_factorytech = false
 def run_thaumic_jei = false
 def run_astral_sorcery = false
 
+def urlFile = { url, name ->
+    File file = new File("$buildDir/download/${name}.jar")
+    file.parentFile.mkdirs()
+    if (!file.exists()) {
+        new URL(url).withInputStream { downloadStream ->
+            file.withOutputStream { fileOut ->
+                fileOut << downloadStream
+            }
+        }
+    }
+    files(file.absolutePath)
+}
+
 final def mod_dependencies = [
-        'jei-238222:5101347': [true],
+        'had-enough-items-557549:6907239': [true],
         'mystical_lib-277064:3483816': [debug_roots],
         'mystical_world-282940:3460961': [debug_roots],
         'patchouli-306770:3162874': [debug_roots, debug_natures_aura, debug_patchouli],
@@ -152,4 +166,12 @@ dependencies {
 
     // Aurorian only runs on 2859+ for some reason which is wrong
     runtimeOnly 'com.cleanroommc:strip-latest-forge-requirements:1.0'
+
+    def witchery = rfg.deobf(urlFile('https://witchery-api.msrandom.net/download/WitcheryResurrected0.5.2Hotfix4/WitcheryResurrected-1.12.2-0.5.2.4-forge-all.jar', 'witchery'))
+    if (debug_witchery) {
+        implementation witchery
+        runtimeOnly rfg.deobf('curse.maven:witchery-companion-1020447:6602047')
+    } else {
+        compileOnly witchery
+    }
 }

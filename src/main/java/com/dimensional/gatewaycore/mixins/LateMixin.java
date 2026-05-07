@@ -21,7 +21,8 @@ public class LateMixin implements ILateMixinLoader {
             "soot",
             "chisel",
             "extrautils2",
-            "nuclearcraft");
+            "nuclearcraft",
+            "witchery");
 
     @Override
     public List<String> getMixinConfigs() {

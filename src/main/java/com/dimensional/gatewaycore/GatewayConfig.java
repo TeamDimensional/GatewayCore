@@ -71,6 +71,9 @@ public class GatewayConfig {
 
         @Config.Comment("Should we disable special properties for Chisel blocks? Intended to be used if Chisel blocks are cheap.")
         public boolean noSpecialChiselProperties = true;
+
+        @Config.Comment("Should we disable Witchery's JEI plugin reloading? It often breaks a lot of stuff and can lag, but this should be disabled if you're using Witchery datapacks.")
+        public boolean noWitcheryJeiReload = true;
     }
 
     @Mod.EventBusSubscriber(modid = Tags.MOD_ID)
