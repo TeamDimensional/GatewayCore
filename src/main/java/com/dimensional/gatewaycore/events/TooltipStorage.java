@@ -1,9 +1,19 @@
 package com.dimensional.gatewaycore.events;
 
-import net.minecraft.util.text.TextFormatting;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 
 import javax.annotation.Nullable;
-import java.util.*;
+
+import net.minecraft.client.resources.I18n;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class TooltipStorage<T> {
     public interface StackPredicate<U> {
@@ -32,10 +42,20 @@ public class TooltipStorage<T> {
         }
     }
 
+    static class TooltipData {
+        String tooltip;
+        TextFormatting tf;
+
+        TooltipData(String tooltip, TextFormatting tf) {
+            this.tooltip = tooltip;
+            this.tf = tf;
+        }
+    }
+
     private final Map<String, Integer> tiers = new HashMap<>();
     private final Set<String> unlocks = new HashSet<>();
     private final Set<String> gated = new HashSet<>();
-    private final Map<String, String> tooltips = new HashMap<>();
+    private final Map<String, TooltipData> tooltips = new HashMap<>();
     private final Map<String, PredicateWithText<T>> predicates = new HashMap<>();
     private final Map<String, PredicateWithNumber<T>> tierPredicates = new HashMap<>();
     private final Map<String, Integer> modTiers = new HashMap<>();
@@ -87,20 +107,16 @@ public class TooltipStorage<T> {
         return gated.contains(stringifier.stringify(item));
     }
 
-    private void setTooltipBase(String item, String tooltip) {
-        tooltips.put(item, tooltip);
-    }
-
-    private void setTooltipBase(T item, String tooltip) {
-        setTooltipBase(stringifier.stringify(item), tooltip);
+    private void setTooltip(String item, String tooltip, TextFormatting tf) {
+        tooltips.put(item, new TooltipData(tooltip, tf));
     }
 
     public void setTooltip(T item, String tooltip, TextFormatting tf) {
-        setTooltipBase(item, tf.toString() + tooltip);
+        setTooltip(stringifier.stringify(item), tooltip, tf);
     }
 
     public void setTooltip(T item, String tooltip) {
-        setTooltipBase(item, TextFormatting.YELLOW.toString() + tooltip);
+        setTooltip(item, tooltip, TextFormatting.YELLOW);
     }
 
     public void addPredicate(StackPredicate<T> p, String s) {
@@ -138,16 +154,17 @@ public class TooltipStorage<T> {
         return 1;
     }
 
+    @SideOnly(Side.CLIENT)
     public List<String> getTooltips(T stack) {
         List<String> output = new LinkedList<>();
         int tier = getTier(stack);
         String key = stringifier.stringify(stack);
         // Unlock
         boolean unlock = unlocks.contains(key);
-        if (unlock) output.add(TextFormatting.AQUA + "Unlocks tier " + (tier + 1));
+        if (unlock) output.add(TextFormatting.AQUA + I18n.format("tooltip.gatewaycore.tier_unlock", tier + 1));
         // Tooltip
-        String tt = tooltips.get(key);
-        if (tt != null) output.add(tt);
+        TooltipData tt = tooltips.get(key);
+        if (tt != null) output.add(tt.tf + I18n.format(tt.tooltip));
         // Predicates
         for (PredicateWithText<T> pair : predicates.values()) {
             if (pair.ps.satisfies(stack)) {

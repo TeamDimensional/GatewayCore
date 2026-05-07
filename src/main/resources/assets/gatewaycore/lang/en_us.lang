@@ -54,3 +54,9 @@ container.gateway.cofh_world.vein_size=Vein size: %d
 container.gateway.cofh_world.max_height=Maximum height: %d
 container.gateway.cofh_world.uniform_generation=Y Level: %d-%d
 container.gateway.cofh_world.gaussian_generation=Y Level: %d-%d (best: %d)
+
+tooltip.gatewaycore.gated=This item is gated! Its recipe was temporarily removed.
+tooltip.gatewaycore.future_content=Future Content
+tooltip.gatewaycore.tier=Tier %d
+tooltip.gatewaycore.tier_named=Tier %d - %s
+tooltip.gatewaycore.tier_unlock=Unlocks tier %d

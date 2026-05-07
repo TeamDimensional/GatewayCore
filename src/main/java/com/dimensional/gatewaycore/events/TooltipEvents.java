@@ -1,7 +1,17 @@
 package com.dimensional.gatewaycore.events;
 
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
+import javax.annotation.Nullable;
+
 import com.dimensional.gatewaycore.GatewayConfig;
-import com.dimensional.gatewaycore.GatewayCore;
+
+import net.darkhax.gamestages.GameStageHelper;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -13,10 +23,8 @@ import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.darkhax.gamestages.GameStageHelper;
-
-import javax.annotation.Nullable;
-import java.util.*;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @Mod.EventBusSubscriber
 public class TooltipEvents {
@@ -60,19 +68,19 @@ public class TooltipEvents {
     }
 
     public static void setTooltip(ItemStack item, String tooltip, TextFormatting tf) {
-        stackStorage.setTooltip(item, tf.toString() + tooltip);
+        stackStorage.setTooltip(item, tooltip, tf);
     }
 
     public static void setTooltip(ItemStack item, String tooltip) {
-        stackStorage.setTooltip(item, TextFormatting.YELLOW.toString() + tooltip);
+        stackStorage.setTooltip(item, tooltip);
     }
 
     public static void setTooltip(FluidStack item, String tooltip, TextFormatting tf) {
-        fluidStorage.setTooltip(item, tf.toString() + tooltip);
+        fluidStorage.setTooltip(item, tooltip, tf);
     }
 
     public static void setTooltip(FluidStack item, String tooltip) {
-        fluidStorage.setTooltip(item, TextFormatting.YELLOW.toString() + tooltip);
+        fluidStorage.setTooltip(item, tooltip);
     }
 
     public static void addPredicate(TooltipStorage.StackPredicate<ItemStack> p, String s) {
@@ -111,10 +119,11 @@ public class TooltipEvents {
         tierNames.put(tier, name);
     }
 
+    @SideOnly(Side.CLIENT)
     public static String getTierText(int tier) {
-        if (tier < 0) return "Future content";
-        if (tierNames.containsKey(tier)) return "Tier " + tier + " - " + tierNames.get(tier);
-        return "Tier " + tier;
+        if (tier < 0) return I18n.format("tooltip.gatewaycore.future_content");
+        if (tierNames.containsKey(tier)) return I18n.format("tooltip.gatewaycore.tier_named", tier, I18n.format(tierNames.get(tier)));
+        return I18n.format("tooltip.gatewaycore.tier", tier);
     }
 
     public static boolean hasTier(EntityPlayer player, int tier) {
@@ -150,13 +159,14 @@ public class TooltipEvents {
         return fluid != null && fluidStorage.isGated(fluid);
     }
 
+    @SideOnly(Side.CLIENT)
     public static List<String> getTooltips(ItemStack stack, EntityPlayer player) {
         List<String> output = new LinkedList<>();
 
         int tier = getTier(stack);
         if (isGated(stack)) {
             // Gated
-            output.add(TextFormatting.AQUA + "This item is gated! Its recipe was temporarily removed.");
+            output.add(TextFormatting.AQUA + I18n.format("tooltip.gatewaycore.gated_item"));
         } else if (GatewayConfig.vanilla.showItemTiers && tier != 0) {
             // Tier
             TextFormatting color = TooltipEvents.hasTier(player, tier) ? TextFormatting.GREEN : TextFormatting.RED;
@@ -170,12 +180,13 @@ public class TooltipEvents {
         return output;
     }
 
+    @SideOnly(Side.CLIENT)
     public static List<String> getTooltips(FluidStack stack, EntityPlayer player) {
         List<String> output = new LinkedList<>();
 
         int tier = fluidStorage.getTier(stack);
         if (fluidStorage.isGated(stack)) {
-            output.add(TextFormatting.AQUA + "This item is gated! Its recipe was temporarily removed.");
+            output.add(TextFormatting.AQUA + I18n.format("tooltip.gatewaycore.gated_item"));
         } else if (GatewayConfig.vanilla.showItemTiers && tier != 0) {
             TextFormatting color = TooltipEvents.hasTier(player, tier) ? TextFormatting.GREEN : TextFormatting.RED;
             output.add(color + TooltipEvents.getTierText(tier));
