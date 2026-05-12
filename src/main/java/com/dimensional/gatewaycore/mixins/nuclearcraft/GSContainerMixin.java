@@ -13,5 +13,10 @@ public abstract class GSContainerMixin extends GroovyPropertyContainer {
     @Inject(method = "<init>", at = @At("TAIL"))
     private void addMoreProperties(CallbackInfo ci) {
         addProperty(new GSMultiblockInfiltratorRecipeRegistry("multiblock_infiltrator"));
+        addProperty(new GSDecayGeneratorRecipeRegistry("decay_generator"));
+        addProperty(new GSPebbleFissionRecipeRegistry("pebble_fission"));
+        addProperty(new GSSolidFissionRecipeRegistry("solid_fission"));
+        addProperty(new GSSaltFissionRecipeRegistry("salt_fission"));
+        addProperty(new GSFissionIrradiatorRecipeRegistry("fission_irradiator"));
     }
 }
