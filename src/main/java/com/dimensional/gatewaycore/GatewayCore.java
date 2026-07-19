@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.spongepowered.include.com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableList;
 
 import com.dimensional.gatewaycore.events.TinkerEvents;
 import com.dimensional.gatewaycore.patchouli.PageJEI;
