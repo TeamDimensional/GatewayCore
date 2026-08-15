@@ -1,0 +1,15 @@
+{
+  "package": "com.dimensional.gatewaycore.mixins.mmce",
+  "refmap": "mixins.gatewaycore.refmap.json",
+  "target": "@env(DEFAULT)",
+  "minVersion": "0.8",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "HybridTankMixin",
+    "MultiFluidTankMixin",
+    "TileMultiblockMachineControllerMixin"
+  ],
+  "mixinextras": {
+    "minVersion": "0.5.0-beta.5"
+  }
+}

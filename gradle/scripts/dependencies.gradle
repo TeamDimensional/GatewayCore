@@ -21,13 +21,17 @@ def debug_relauncher = false
 def debug_soot = false
 def debug_chisel = false
 def debug_xu2 = false
-def debug_witchery = false
+// def debug_witchery = false
+def debug_mmce = true
+def debug_actadd = true
 
 def run_tool_progression = false
 def run_abyssalcraft = false
 def run_factorytech = false
 def run_thaumic_jei = false
 def run_astral_sorcery = false
+def run_deep_resonance = true
+def run_crafttweaker = true
 
 def urlFile = { url, name ->
     File file = new File("$buildDir/download/${name}.jar")
@@ -41,6 +45,8 @@ def urlFile = { url, name ->
     }
     files(file.absolutePath)
 }
+
+def should_run_crafttweaker = run_crafttweaker || run_mmce
 
 final def mod_dependencies = [
         'had-enough-items-557549:6907239': [true],
@@ -73,6 +79,8 @@ final def mod_dependencies = [
         'chisel-235279:2915375': [debug_chisel],
         'ctm-267602:2915363': [debug_chisel],
         'extra-utilities-225561:2678374': [debug_xu2],
+        'modularmachinery-community-edition-817377:7372951': [debug_mmce],
+        'actually-additions-228404:3117927': [debug_actadd],
 ]
 
 final def runtime_dependencies = [
@@ -88,6 +96,11 @@ final def runtime_dependencies = [
         'thaumic-jei-285492:5646810': [run_thaumic_jei],
         'thaumcraft-223628:2629023': [run_thaumic_jei],
         'astral-sorcery-241721:3044416': [run_astral_sorcery],
+        'deep-resonance-233398:2704397': [run_deep_resonance],
+        'mcjtylib-233105:2745846': [run_deep_resonance],
+        'eleccore-227391:2853959': [run_deep_resonance],
+        'zenutil-401178:8385068': [should_run_crafttweaker],
+        'configanytime-870276:5212709': [should_run_crafttweaker],
 ]
 
 repositories {
@@ -113,6 +126,17 @@ repositories {
         }
         filter {
             includeGroup 'maven.modrinth'
+        }
+    }
+    exclusiveContent {
+        forRepository {
+            maven {
+                name 'Modrinth'
+                url 'https://maven.blamejared.com'
+            }
+        }
+        filter {
+            includeGroup 'CraftTweaker2'
         }
     }
     mavenLocal() // Must be last for caching to work
@@ -167,11 +191,11 @@ dependencies {
     // Aurorian only runs on 2859+ for some reason which is wrong
     runtimeOnly 'com.cleanroommc:strip-latest-forge-requirements:1.0'
 
-    def witchery = rfg.deobf(urlFile('https://witchery-api.msrandom.net/download/WitcheryResurrected0.5.2Hotfix4/WitcheryResurrected-1.12.2-0.5.2.4-forge-all.jar', 'witchery'))
-    if (debug_witchery) {
-        implementation witchery
-        runtimeOnly rfg.deobf('curse.maven:witchery-companion-1020447:6602047')
+    // Crafttweaker doesn't work coming from Curse maven
+    def ct = "CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.1.20.698"
+    if (should_run_crafttweaker) {
+        implementation ct
     } else {
-        compileOnly witchery
+        compileOnly ct
     }
 }

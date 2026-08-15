@@ -8,6 +8,7 @@ import org.apache.logging.log4j.Logger;
 import com.google.common.collect.ImmutableList;
 
 import com.dimensional.gatewaycore.events.TinkerEvents;
+import com.dimensional.gatewaycore.mmce.MMCEIntegration;
 import com.dimensional.gatewaycore.patchouli.PageJEI;
 import com.dimensional.gatewaycore.patchouli.PageMultiItem;
 import com.dimensional.gatewaycore.render.RenderManager;
@@ -58,6 +59,10 @@ public class GatewayCore implements IFMLLoadingPlugin, IEarlyMixinLoader {
                 || GatewayConfig.tConstruct.createCustomMaterials)) {
             LOGGER.info("Post-initializing TiC...");
             MaterialRegistry.postInit();
+        }
+
+        if (Loader.isModLoaded("modularmachinery")) {
+            MMCEIntegration.initialize();
         }
 
         if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {

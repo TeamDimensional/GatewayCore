@@ -288,6 +288,13 @@ tasks.register('generateMixinJson') {
     }
 }
 
+java {
+    if (propertyBool('use_modern_java_syntax')) {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+}
+
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
     if (propertyBool('use_modern_java_syntax')) {
@@ -306,12 +313,6 @@ tasks.withType(JavaCompile).configureEach {
 tasks.register('cleanroomAfterSync') {
     group 'cleanroom helpers'
     dependsOn 'injectTags', 'generateMixinJson'
-}
-
-if (propertyBool('use_modern_java_syntax')) {
-    tasks.withType(Javadoc).configureEach {
-        sourceCompatibility = 17
-    }
 }
 
 tasks.named('injectTags', InjectTagsTask).configure {
