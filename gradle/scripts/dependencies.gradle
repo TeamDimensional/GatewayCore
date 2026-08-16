@@ -24,6 +24,7 @@ def debug_xu2 = false
 // def debug_witchery = false
 def debug_mmce = true
 def debug_actadd = true
+def debug_geckolib = true
 
 def run_tool_progression = false
 def run_abyssalcraft = false
@@ -81,6 +82,7 @@ final def mod_dependencies = [
         'extra-utilities-225561:2678374': [debug_xu2],
         'modularmachinery-community-edition-817377:7372951': [debug_mmce],
         'actually-additions-228404:3117927': [debug_actadd],
+        'geckolib-388172:4020277': [debug_geckolib],
 ]
 
 final def runtime_dependencies = [
